@@ -1,261 +1,242 @@
-# OpenClaw-Robotics 发展路线图
+# OpenClaw-Robotics 2026 Roadmap
 
-## 📋 版本规划
+## 🎯 Core Goals (Complete in 2026)
 
-### v1.0.x - 当前版本 ✅
-**聚焦：核心功能与G1/GO2支持**
-- [x] 基础移动控制（前后左右、旋转）
-- [x] 预设动作系统
-- [x] WhatsApp消息集成
-- [x] OpenClaw接口层
-- [x] 支持型号：
-  - [x] Unitree GO1
-  - [x] Unitree GO2
-  - [x] Unitree G1
+### ✅ Completed
+- Base architecture
+- GO1/GO2/G1 basic control
+- WhatsApp integration
 
-### v1.1.x - 下一步 🚧
-**聚焦：B2/H1支持与架构优化**
-- [ ] 优化代码架构
-- [ ] 支持型号：
-  - [ ] Unitree B2（工业版）
-  - [ ] Unitree H1（人形机器人）
-- [ ] 统一驱动接口
-- [ ] 性能优化
+### 🚀 Q1-Q2 (H1 2026) - Visual SLAM & Mapping
+**Focus: Visual SLAM + Insight9 Deep Integration**
 
-### v2.0.x - 中期目标 🎯
-**聚焦：多品牌扩展**
-- [ ] 品牌抽象层
-- [ ] 支持品牌：
-  - [ ] Boston Dynamics (Spot)
-  - [ ] Agility Robotics (Cassie)
-  - [ ] ANYbotics (ANYmal)
-- [ ] 通用HAL（硬件抽象层）
-- [ ] 配置化驱动系统
+- [ ] **Visual SLAM Core**
+  - [ ] ORB-SLAM3 base framework
+  - [ ] VINS-Fusion support
+  - [ ] Real-time map building
+  - [ ] Map save/load
 
-### v3.0.x - 长期愿景 🚀
-**聚焦：SLAM与导航**
-- [ ] SLAM集成
-  - [ ] Lidar SLAM
-  - [ ] Visual SLAM
-  - [ ] 传感器融合
-- [ ] 地图系统
-  - [ ] 地图创建与存储
-  - [ ] 语义地图
-  - [ ] 动态地图更新
-- [ ] 导航功能
-  - [ ] 路径规划 (A*, RRT)
-  - [ ] 自主导航
-  - [ ] 目标点导航
-  - [ ] 避障系统
-- [ ] 任务调度
-  - [ ] 自主任务执行
-  - [ ] 任务优先级
-  - [ ] 任务状态管理
+- [ ] **Insight9 Camera Deep Integration**
+  - [ ] Insight9-V1/Pro/Max drivers
+  - [ ] Depth data stream for SLAM
+  - [ ] Multi-camera sync
+  - [ ] Edge compute optimization
+
+### 🎯 Q3-Q4 (H2 2026) - TinyNav Navigation
+**Focus: Open-source TinyNav Navigation Integration + Autonomous Navigation**
+
+- [ ] **TinyNav Integration**
+  - [ ] A* Path planning
+  - [ ] RRT real-time planning
+  - [ ] DWA/TEB Obstacle avoidance
+  - [ ] Semantic navigation
+
+- [ ] **Autonomous Navigation Tasks**
+  - [ ] Point-to-point navigation
+  - [ ] Area cruise
+  - [ ] Multi-target task sequences
 
 ---
 
-## 🤖 机器人支持矩阵
+## 🤖 Supported Device Matrix
 
-### Unitree 系列 ✅ 当前支持
+### 🐾 Unitree Robots (Plugin-Based)
 
-| 型号 | 类型 | 状态 | 备注 |
-|------|------|------|------|
-| GO1 | 四足 | ✅ 已支持 | 基础型号 |
-| GO2 | 四足 | ✅ 已支持 | 最新四足 |
-| G1 | 人形 | ✅ 已支持 | 基础人形 |
-| B2 | 四足 | ⏳ 待开发 | 工业级 |
-| H1 | 人形 | ⏳ 待开发 | 通用人形 |
-| A1 | 四足 | ⏳ 待开发 | 早期型号 |
+| Model | Type | Status | Plugin Import |
+|-------|------|--------|---------------|
+| GO1 | Quadruped | ✅ | `from plugins.robots.go1 import GO1Driver` |
+| GO2 | Quadruped | ✅ | `from plugins.robots.go2 import GO2Driver` |
+| G1 | Humanoid | ✅ | `from plugins.robots.g1 import G1Driver` |
 
-### 其他品牌 ⏳ 计划中
+**Users don't need to modify core code, just import the corresponding plugin**
 
-| 品牌 | 型号 | 优先级 | 状态 |
-|------|------|--------|------|
-| Boston Dynamics | Spot | 高 | 调研中 |
-| Agility Robotics | Cassie | 中 | 调研中 |
-| ANYbotics | ANYmal | 中 | 调研中 |
-| Xiaomi | CyberDog | 低 | 调研中 |
+### 📷 Insight9 Sensors (Plug & Play)
+
+| Model | Type | Status | Usage |
+|-------|------|--------|-------|
+| Insight9-V1 | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9V1` |
+| Insight9-Pro | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9Pro` |
+| Insight9-Max | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9Max` |
 
 ---
 
-## 🗺️ SLAM与导航功能规划
+## 🗺️ Architecture Design
 
-### v3.0 - SLAM基础
+### Plugin System
+```python
+# Users just import, auto-use
+from openclaw_robotics import Robot
 
-#### 传感器支持
-- **Lidar** (激光雷达)
-  - RPLIDAR系列
-  - Hokuyo系列
-  - Velodyne系列
-- **Camera** (深度相机)
-  - Intel RealSense
-  - Azure Kinect
-  - Orbbec Astra
-- **IMU** (惯性测量单元)
-  - MPU6050
-  - BMI160
-  - VectorNav
+# Auto-detect and connect - no model specification needed
+robot = Robot.auto_connect()
 
-#### SLAM算法
-- **Laser SLAM**
-  - GMapping
-  - Cartographer
-  - LOAM
-- **Visual SLAM**
-  - ORB-SLAM3
-  - VINS-Fusion
-  - RTAB-Map
-- **Sensor Fusion**
-  - LIO-SAM
-  - LVI-SAM
-
-### v3.1 - 地图系统
-
-#### 地图类型
-- **2D占用网格地图**
-  - 室内导航
-  - 障碍物检测
-- **3D点云地图**
-  - 环境建模
-  - 空间感知
-- **语义地图**
-  - 物体识别
-  - 场景理解
-
-### v3.2 - 导航功能
-
-#### 导航能力
-- **路径规划**
-  - 全局规划 (A*, D*, RRT)
-  - 局部规划 (DWA, TEB)
-- **自主导航**
-  - 目标点导航
-  - 巡航模式
-  - 区域巡逻
-- **任务系统**
-  - 任务定义
-  - 任务调度
-  - 状态监控
-
----
-
-## 🏗️ 架构演进
-
-### 当前架构 (v1.0)
-```
-src/
-├── robot_controller.py    # 统一控制器
-├── whatsapp_handler.py     # 消息处理
-├── whatsapp_integration.py # WhatsApp API
-└── openclaw_interface.py  # OpenClaw接口
+# Or manually specify
+robot = Robot.use_plugin("go2")  # Use GO2 plugin
 ```
 
-### 目标架构 (v2.0+)
+### Visual SLAM
+```python
+from openclaw_robotics.slam import SLAM
+
+# Auto-initialize
+slam = SLAM.auto_init(sensor="insight9_pro")
+
+# Get pose
+pose = slam.get_pose()
 ```
-src/
-├── core/                 # 核心接口
-│   ├── robot_base.py    # 机器人基类
-│   └── navigation.py    # 导航接口
-├── drivers/              # 驱动层
-│   ├── unitree/         # Unitree驱动
-│   │   ├── go1.py
-│   │   ├── go2.py
-│   │   ├── g1.py
-│   │   ├── b2.py       # 待开发
-│   │   └── h1.py       # 待开发
-│   ├── boston_dynamics/ # 计划中
-│   └── ...
-├── slam/                # SLAM模块 (v3.0)
-│   ├── lidar_slam.py
-│   ├── visual_slam.py
-│   └── sensor_fusion.py
-├── navigation/          # 导航模块 (v3.0)
-│   ├── path_planner.py
-│   ├── local_planner.py
-│   └── task_manager.py
-├── whatsapp/            # WhatsApp集成
-└── openclaw/           # OpenClaw集成
+
+### TinyNav Navigation
+```python
+from openclaw_robotics.navigation import Navigator
+
+nav = Navigator(robot, slam)
+nav.navigate(goal=(2.0, 1.5, 0.0))  # x, y, theta
 ```
 
 ---
 
-## 📈 开发里程碑
+## 📁 Project Structure
 
-### Phase 1: 基础稳定化 (v1.0.x)
-- [x] GO1/GO2/G1基础支持
-- [x] 核心控制功能
-- [x] WhatsApp集成
-- [x] 文档完善
-
-**时间**: 2026年2月 ✅ 已完成
-
-### Phase 2: 扩展支持 (v1.1.x)
-- [ ] B2/H1驱动开发
-- [ ] 代码重构
-- [ ] 统一接口
-- [ ] 性能优化
-
-**时间**: 2026年Q2 (预计)
-
-### Phase 3: 多品牌扩展 (v2.0.x)
-- [ ] 架构抽象化
-- [ ] Boston Dynamics支持
-- [ ] Agility Robotics支持
-- [ ] 通用HAL开发
-
-**时间**: 2026年Q3-Q4 (预计)
-
-### Phase 4: SLAM与导航 (v3.0.x)
-- [ ] SLAM集成
-- [ ] 地图系统
-- [ ] 自主导航
-- [ ] 任务系统
-
-**时间**: 2027年 (预计)
+```
+OpenClaw-Robotics/
+├── src/
+│   ├── core/                    # Core framework
+│   │   └── plugin_system.py      # Plugin system
+│   ├── robots/                   # Robot plugins
+│   │   ├── go1/                 # GO1 plugin
+│   │   ├── go2/                 # GO2 plugin
+│   │   └── g1/                  # G1 plugin
+│   ├── sensors/                  # Sensor plugins
+│   │   └── insight9/            # Insight9 series
+│   ├── slam/                     # SLAM module
+│   │   └── visual_slam.py       # Visual SLAM
+│   └── navigation/               # Navigation module (Q3)
+│       └── tinynav/             # TinyNav integration
+├── plugins/                       # Plugin entry
+│   ├── __init__.py              # Auto register all plugins
+│   └── auto_import.py           # Auto import utility
+├── configs/                      # Config templates
+├── examples/                      # Usage examples
+└── README.md
+```
 
 ---
 
-## 🔧 技术债务
+## 🚀 Quick Start
 
-### 当前待解决
-- [ ] 单元测试覆盖不足 (当前~60%)
-- [ ] 缺少集成测试
-- [ ] 文档API部分缺失
-- [ ] CI/CD流程待完善
+### 1. Install
+```bash
+git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
+cd OpenClaw-Robotics
+pip install -r requirements.txt
+```
 
-### 计划解决
-- [ ] 添加更多测试用例
-- [ ] 集成GitHub Actions
-- [ ] 自动文档生成
-- [ ] 性能基准测试
+### 2. Use Robot (No Config)
+```python
+from openclaw_robotics import Robot
+
+# Auto-detect and connect
+robot = Robot.auto_connect()
+
+# Control robot
+robot.forward(0.5)
+robot.rotate(45)
+robot.execute("wave")
+```
+
+### 3. Use SLAM (Q1-Q2)
+```python
+from openclaw_robotics.slam import SLAM
+
+# Auto-initialize Insight9 + SLAM
+slam = SLAM.auto_init(sensor="insight9_pro")
+
+# Get pose
+pose = slam.get_pose()
+
+# Save map
+slam.save_map("my_map.bin")
+```
+
+### 4. Use Navigation (Q3-Q4)
+```python
+from openclaw_robotics.navigation import Navigator
+
+nav = Navigator(robot, slam)
+nav.navigate(goal=(3.0, 2.0, 0.0))  # Auto path planning & obstacle avoidance
+```
 
 ---
 
-## 📊 贡献者指南
+## 📊 Development Timeline
 
-### 如何参与
-1. **选择任务**: 从上述清单中选择状态为"⏳"的任务
-2. **创建分支**: `git checkout -b feature/xxx`
-3. **开发实现**: 遵循项目编码规范
-4. **提交PR**: 包含测试和文档
-5. **代码审查**: 由维护者审核
+### Q1 2026 (Jan-Mar)
+- [x] Base architecture
+- [x] Plugin system design
+- [ ] **Jan**: Visual SLAM interface standardization
+- [ ] **Feb**: Insight9 Pro driver
+- [ ] **Mar**: ORB-SLAM3 base integration
 
-### 编码规范
-- Python 3.8+
-- Type hints必需
-- Docstrings必需
-- 单元测试必需
-- 遵循PEP 8
+### Q2 2026 (Apr-Jun)
+- [ ] **Apr**: VINS-Fusion support
+- [ ] **May**: Insight9 full series support
+- [ ] **Jun**: SLAM map functionality
+
+### Q3 2026 (Jul-Sep)
+- [ ] **Jul**: TinyNav Basic
+- [ ] **Aug**: A* + RRT path planning
+- [ ] **Sep**: Obstacle avoidance algorithm integration
+
+### Q4 2026 (Oct-Dec)
+- [ ] **Oct**: Semantic navigation
+- [ ] **Nov**: Performance optimization
+- [ ] **Dec**: Complete v2.0 release
 
 ---
 
-## 📞 联系
+## 🔌 Plugin Development Guide
 
-- **项目**: https://github.com/LooperRobotics/OpenClaw-Robotics
+### Create New Robot Plugin
+```python
+# plugins/robots/my_robot.py
+from openclaw_robotics.core import RobotPlugin
+
+class MyRobotDriver(RobotPlugin):
+    PLUGIN_NAME = "my_robot"
+    PLUGIN_VERSION = "1.0.0"
+    
+    def connect(self) -> bool:
+        # Your connection code
+        return True
+    
+    def move(self, cmd) -> bool:
+        # Your movement code
+        return True
+
+# Auto-register - no extra code needed
+```
+
+### Create New Sensor Plugin
+```python
+# plugins/sensors/my_sensor.py
+from openclaw_robotics.core import SensorPlugin
+
+class MySensorDriver(SensorPlugin):
+    PLUGIN_NAME = "my_sensor"
+    
+    def read(self) -> Dict:
+        # Read sensor data
+        return {"data": 0}
+```
+
+---
+
+## 📞 Contact
+
+- **GitHub**: https://github.com/LooperRobotics/OpenClaw-Robotics
 - **Issues**: GitHub Issues
-- **讨论**: GitHub Discussions
 
 ---
 
-*最后更新: 2026年2月15日*
-*维护者: OpenClaw Contributors*
+*Last Updated: February 15, 2026*
+*Version: v1.1.0*
