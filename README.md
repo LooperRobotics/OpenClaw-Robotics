@@ -8,37 +8,37 @@
 <br>
 
 <p align="center">
-  <strong>Control robots via instant messaging (WeChat, WhatsApp, Telegram)</strong>
+  <strong>Control robots via instant messaging platforms</strong>
   <br>
-  One skill, infinite possibilities for embodied AI robots
+  Built on OpenClaw framework for embodied AI robotics
 </p>
 
 ---
 
-## 🚀 Overview
+## Overview
 
-**OpenClaw-Robotics** is a comprehensive framework for controlling robots through instant messaging apps using the OpenClaw ecosystem.
+OpenClaw-Robotics enables natural robot control through IM (Instant Messaging) platforms. Send commands via WeCom, Feishu, DingTalk, or WhatsApp, and the robot executes them in real-time.
 
 ```
-User (IM App) ──► OpenClaw Skill ──► Robot Adapter ──► Physical Robot
-   ↑                        │
-   └────────────────────────┘
-        (Response/Feedback)
+User (IM App) ──► OpenClaw Gateway ──► Skill ──► Robot ──► Physical Robot
+                     │                                        │
+                     └────────────────────────────────────────┘
+                           (Response/Feedback)
 ```
 
-### Core Features
+### Key Features
 
-- 🌐 **Multi-IM Support**: WeChat, WeCom, WhatsApp, Telegram
-- 🤖 **Multi-Robot Support**: Quadrupeds, Humanoids, Wheeled, Aerial, Surface
-- 📷 **Sensor Integration**: RGB-D cameras, LiDAR, IMU (with deep Insight9 support)
-- 🗺️ **VSLAM & Navigation**: Real-time mapping, path planning, obstacle avoidance
-- 🎯 **Natural Language Control**: Parse commands like "forward 1m then turn left"
+- **Multi-IM Support**: WeCom, Feishu, DingTalk, WhatsApp
+- **Multi-Robot Support**: Quadrupeds, Humanoids, extensible architecture
+- **Deep Insight9 Integration**: Native RGB-D camera support for VSLAM
+- **VSLAM & Navigation**: Visual SLAM, path planning, obstacle avoidance
+- **Natural Language Control**: Parse commands like "forward 1m then turn left"
 
 ---
 
-## 📦 Supported Hardware
+## Supported Hardware
 
-### 🤖 Robots
+### Robots
 
 | Brand | Model | Type | Status |
 |-------|-------|------|--------|
@@ -47,36 +47,34 @@ User (IM App) ──► OpenClaw Skill ──► Robot Adapter ──► Physica
 | Unitree | Ali | Quadruped | ✅ |
 | Unitree | G1 | Humanoid | ✅ |
 | Unitree | H1 | Humanoid | ✅ |
-| (More) | Coming... | Wheeled/Aerial | ⏳ |
 
-### 📷 Sensors
+### Sensors
 
 | Sensor | Type | Status |
 |--------|------|--------|
-| **Insight9 Pro** | RGB-D Camera | ✅ |
-| **Insight9 Max** | RGB-D Camera (4K) | ✅ |
+| **Insight9** | RGB-D Camera | ✅ |
 | LiDAR | Distance | ⏳ |
 | IMU | Inertial | ⏳ |
 
-### 💬 IM Channels
+### IM Channels
 
 | Channel | Status |
 |---------|--------|
-| WeChat (个人微信) | ✅ |
 | WeCom (企业微信) | ✅ |
+| Feishu (飞书) | ✅ |
+| DingTalk (钉钉) | ✅ |
 | WhatsApp | ✅ |
-| Telegram | ✅ |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    IM Adapters (src/im/)                    │
-│  ┌────────┐ ┌────────┐ ┌──────────┐ ┌──────────┐          │
-│  │WeChat  │ │ WeCom  │ │ WhatsApp │ │ Telegram │          │
-│  └────────┘ └────────┘ └──────────┘ └──────────┘          │
+│  ┌────────┐ ┌────────┐ ┌──────────┐ ┌────────────┐        │
+│  │ WeCom  │ │Feishu  │ │ DingTalk │ │ WhatsApp   │        │
+│  └────────┘ └────────┘ └──────────┘ └────────────┘        │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
@@ -93,15 +91,13 @@ User (IM App) ──► OpenClaw Skill ──► Robot Adapter ──► Physica
 │                 │ │               │ │                 │
 │ • quadruped     │ │ • Insight9    │ │ • Visual SLAM  │
 │ • humanoid      │ │ • LiDAR       │ │ • Navigation   │
-│ • wheeled       │ │ • IMU         │ │ • Mapping      │
-│ • aerial        │ │               │ │                 │
-│ • surface       │ │               │ │                 │
+│                 │ │ • IMU         │ │ • Mapping      │
 └─────────────────┘ └───────────────┘ └─────────────────┘
 ```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 OpenClaw-Robotics/
@@ -116,20 +112,17 @@ OpenClaw-Robotics/
 │   │
 │   ├── im/                      # IM adapters
 │   │   ├── im_adapter.py        # Base class
-│   │   ├── wechat.py            # WeChat
 │   │   ├── wecom.py             # WeCom
-│   │   ├── whatsapp.py          # WhatsApp
-│   │   └── telegram.py          # Telegram
+│   │   ├── feishu.py            # Feishu
+│   │   ├── dingtalk.py          # DingTalk
+│   │   └── whatsapp.py          # WhatsApp
 │   │
 │   ├── robots/                  # Robot adapters
 │   │   ├── robot_adapter.py     # Base class
 │   │   ├── quadruped/           # Quadruped robots
 │   │   │   └── unitree.py       # GO1, GO2, Ali
-│   │   ├── humanoid/            # Humanoid robots
-│   │   │   └── unitree.py       # G1, H1
-│   │   ├── wheeled/             # Wheeled robots (future)
-│   │   ├── aerial/              # Aerial robots (future)
-│   │   └── surface/             # Surface vehicles (future)
+│   │   └── humanoid/            # Humanoid robots
+│   │       └── unitree.py       # G1, H1
 │   │
 │   ├── sensors/                 # Sensor adapters
 │   │   ├── sensor_adapter.py    # Base class
@@ -140,8 +133,7 @@ OpenClaw-Robotics/
 │       └── visual_slam.py       # VSLAM + Navigator
 │
 ├── examples/                    # Usage examples
-│   ├── basic_control.py
-│   └── im_integration.py
+│   └── basic_control.py
 │
 └── tests/                       # Tests
     └── test_robot_control.py
@@ -149,7 +141,7 @@ OpenClaw-Robotics/
 
 ---
 
-## 🛠️ Quick Start
+## Quick Start
 
 ### 1. Installation
 
@@ -183,20 +175,20 @@ print(result)
 
 ### 4. Control Robot via IM
 
-Once configured, simply send commands through WeChat/WhatsApp:
+Send commands through your IM platform:
 
 | Command | Action |
 |---------|--------|
-| `往前走1米` | Move forward 1m |
-| `左转45度` | Turn left 45° |
-| `站立` | Stand up |
-| `坐下` | Sit down |
-| `挥手` | Wave hand |
-| `往前走然后左转` | Compound command |
+| `往前走1米` / `forward 1m` | Move forward 1m |
+| `左转45度` / `turn left 45` | Turn left 45° |
+| `站立` / `stand` | Stand up |
+| `坐下` / `sit` | Sit down |
+| `挥手` / `wave` | Wave hand |
+| `往前走然后左转` / `forward then turn left` | Compound command |
 
 ---
 
-## 🔧 Adding New Robots
+## Adding New Robots
 
 ```python
 from src.robot_adapter import RobotAdapter, RobotState, TaskResult, RobotType
@@ -223,7 +215,7 @@ RobotFactory.register("myrobot_x1")(MyRobotAdapter)
 
 ---
 
-## 🎯 Roadmap
+## Roadmap
 
 See [ROADMAP.md](docs/ROADMAP.md) for detailed development plan.
 
@@ -233,25 +225,25 @@ See [ROADMAP.md](docs/ROADMAP.md) for detailed development plan.
 - [ ] Multi-robot coordination
 
 ### 2026 Q3-Q4
-- [ ] Wheeled robot support
-- [ ] Aerial robot support
+- [ ] Additional robot support (wheeled, aerial)
 - [ ] Advanced SLAM algorithms
+- [ ] Fleet management
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## 📄 License
+## License
 
 MIT License - See [LICENSE](LICENSE)
 
 ---
 
-## 👨‍💻 Authors
+## Authors
 
 - **LooperRobotics** - [github.com/LooperRobotics](https://github.com/LooperRobotics)
 

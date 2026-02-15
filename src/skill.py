@@ -1,10 +1,10 @@
 """
 OpenClaw Robotics Skill - Main Entry Point
 
-Control robots via IM (WeChat, WeCom, WhatsApp, Telegram)
+Control robots via IM (WeCom, Feishu, DingTalk, WhatsApp)
 """
 
-from typing import Optional, Callable
+from typing import Optional
 from .robot_factory import RobotFactory
 from .robots.robot_adapter import RobotState, TaskResult
 from .slam.visual_slam import VisualSLAM, Navigator
@@ -17,7 +17,7 @@ class RoboticsSkill:
     Usage:
         skill = RoboticsSkill()
         skill.initialize(robot="unitree_go2", im="wecom")
-        skill.execute("往前走1米")
+        skill.execute("forward 1m")
     """
     
     def __init__(self):
@@ -28,15 +28,7 @@ class RoboticsSkill:
         
     def initialize(self, robot: str = "unitree_go2", im: str = "wecom", 
                    robot_ip: str = "192.168.12.1", config: dict = None):
-        """
-        Initialize robot and IM connection
-        
-        Args:
-            robot: Robot code (unitree_go2, etc.)
-            im: IM channel (wechat, wecom, whatsapp, telegram)
-            robot_ip: Robot IP
-            config: Additional config
-        """
+        """Initialize robot and IM connection"""
         # Create robot
         self.robot = RobotFactory.create(robot, robot_ip)
         if not self.robot or not self.robot.connect():
@@ -46,10 +38,15 @@ class RoboticsSkill:
         if im == "wecom":
             from .im.wecom import WeComAdapter
             self.im_adapter = WeComAdapter(config)
+        elif im == "feishu":
+            from .im.feishu import FeishuAdapter
+            self.im_adapter = FeishuAdapter(config)
+        elif im == "dingtalk":
+            from .im.dingtalk import DingTalkAdapter
+            self.im_adapter = DingTalkAdapter(config)
         elif im == "whatsapp":
             from .im.whatsapp import WhatsAppAdapter
             self.im_adapter = WhatsAppAdapter(config)
-        # ... other IM
         
         if self.im_adapter:
             self.im_adapter.connect()
@@ -62,43 +59,31 @@ class RoboticsSkill:
         }
     
     def execute(self, command: str) -> dict:
-        """
-        Execute natural language command
-        
-        Args:
-            command: Natural language command
-            
-        Returns:
-            dict: Execution result
-        """
+        """Execute natural language command"""
         if not self.robot:
             return {"success": False, "error": "Not initialized"}
         
-        # Parse command
         parsed = self._parse_command(command)
-        
-        # Execute
         return self._execute_action(parsed["action"], parsed["params"])
     
     def _parse_command(self, command: str) -> dict:
-        """Parse natural language to action"""
+        """Parse command to action"""
         import re
         
-        # Simple parser (can be enhanced with LLM)
         patterns = [
-            (r"(向前|前进|往前走)(\d+(?:\.\d+)?)米?", "forward", "distance"),
-            (r"(向后|后退)(\d+(?:\.\d+)?)米?", "backward", "distance"),
-            (r"左转(\d+(?:\.\d+)?)度?", "turn_left", "angle"),
-            (r"右转(\d+(?:\.\d+)?)度?", "turn_right", "angle"),
-            (r"(站起?|起来|站立)", "stand", None),
-            (r"坐下", "sit", None),
-            (r"停止", "stop", None),
-            (r"挥手", "wave", None),
-            (r"握手", "handshake", None),
+            (r"(向前|前进|forward)(\d+(?:\.\d+)?)米?", "forward", "distance"),
+            (r"(向后|后退|backward)(\d+(?:\.\d+)?)米?", "backward", "distance"),
+            (r"左转(turn left)(\d+(?:\.\d+)?)度?", "turn_left", "angle"),
+            (r"右转(turn right)(\d+(?:\.\d+)?)度?", "turn_right", "angle"),
+            (r"(站起|stand up|stand)", "stand", None),
+            (r"(坐下|sit down|sit)", "sit", None),
+            (r"(停止|stop)", "stop", None),
+            (r"(挥手|wave)", "wave", None),
+            (r"(握手|handshake)", "handshake", None),
         ]
         
         for pattern, action, param_name in patterns:
-            match = re.search(pattern, command)
+            match = re.search(pattern, command, re.IGNORECASE)
             if match:
                 params = {}
                 if param_name and match.group(1):
@@ -151,7 +136,7 @@ class RoboticsSkill:
                 result = self.robot.play_action("handshake")
                 
             elif action == "unknown":
-                return {"success": False, "error": f"Unknown: {action}"}
+                return {"success": False, "error": f"Unknown command: {action}"}
                 
             else:
                 result = TaskResult(False, f"Not implemented: {action}")

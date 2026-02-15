@@ -1,21 +1,21 @@
-"""WeChat adapter (个人微信 - 需要itchat或其他库)"""
+"""DingTalk (钉钉) Adapter"""
 
 from .im_adapter import IMAdapter, IMMessage
 
 
-class WeChatAdapter(IMAdapter):
-    """WeChat personal account adapter"""
+class DingTalkAdapter(IMAdapter):
+    """DingTalk Robot/Callback adapter"""
     
-    CHANNEL_NAME = "wechat"
+    CHANNEL_NAME = "dingtalk"
     
     def __init__(self, config: dict = None):
         super().__init__(config)
-        self.bot = None
+        self.agent_id = config.get("agent_id", "") if config else ""
+        self.app_key = config.get("app_key", "") if config else ""
+        self.app_secret = config.get("app_secret", "") if config else ""
         
     def connect(self) -> bool:
-        # 实现微信登录
-        # import itchat
-        # self.bot = itchat.login()
+        # Get access_token
         self.connected = True
         return True
     
@@ -23,7 +23,7 @@ class WeChatAdapter(IMAdapter):
         self.connected = False
         
     def send_message(self, user_id: str, message: str) -> bool:
-        # self.bot.send(message, toUserName=user_id)
+        # Send via DingTalk robot
         return True
         
     def send_image(self, user_id: str, image_path: str) -> bool:

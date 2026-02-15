@@ -1,8 +1,8 @@
 """IM Adapters"""
 
 from .im_adapter import IMAdapter, IMMessage, IMUser
-from .wechat import WeChatAdapter
 from .wecom import WeComAdapter
-from .telegram import TelegramAdapter
+from .feishu import FeishuAdapter
+from .dingtalk import DingTalkAdapter
 
-__all__ = ["IMAdapter", "IMMessage", "IMUser", "WeChatAdapter", "WeComAdapter", "TelegramAdapter"]
+__all__ = ["IMAdapter", "IMMessage", "IMUser", "WeComAdapter", "FeishuAdapter", "DingTalkAdapter"]
