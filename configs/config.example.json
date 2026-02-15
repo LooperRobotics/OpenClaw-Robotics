@@ -1,0 +1,152 @@
+{
+  "robot": {
+    "type": "go1",
+    "default_speed": 0.5,
+    "max_speed": 1.0,
+    "connection_timeout": 10,
+    "robot_ip": "192.168.1.100",
+    "robot_port": 8080
+  },
+  
+  "whatsapp": {
+    "enabled": true,
+    "webhook_port": 8080,
+    "verify_token": "your_verify_token_here",
+    "phone_number_id": "your_phone_number_id",
+    
+    "security": {
+      "validate_signatures": true,
+      "allowed_senders": [],
+      "allowed_countries": []
+    },
+    
+    "response": {
+      "use_markdown": true,
+      "max_message_length": 4096,
+      "typing_indicator": true
+    },
+    
+    "rate_limiting": {
+      "enabled": true,
+      "max_messages_per_minute": 30,
+      "max_commands_per_message": 5
+    }
+  },
+  
+  "predefined_actions": {
+    "wave": {
+      "enabled": true,
+      "duration": 2.0,
+      "speed": 0.3,
+      "description": "Wave gesture"
+    },
+    "bow": {
+      "enabled": true,
+      "speed": 0.2,
+      "description": "Bow gesture"
+    },
+    "dance": {
+      "enabled": true,
+      "duration": 10.0,
+      "speed": 0.4,
+      "loops": 1,
+      "description": "Dance routine with random movements"
+    },
+    "walk_around": {
+      "enabled": true,
+      "duration": 30.0,
+      "speed": 0.4,
+      "step_duration": 2.0,
+      "description": "Walk around the area"
+    },
+    "circle": {
+      "enabled": true,
+      "direction": "left",
+      "radius": 1.0,
+      "speed": 0.3,
+      "description": "Move in a circular path"
+    },
+    "sit": {
+      "enabled": true,
+      "description": "Sit down"
+    },
+    "stand": {
+      "enabled": true,
+      "description": "Stand up"
+    }
+  },
+  
+  "openclaw": {
+    "enabled": true,
+    "agent_prompt": "You are a helpful assistant for controlling a Unitree robot through WhatsApp messages.",
+    "default_model": "minimax/MiniMax-M2.1",
+    
+    "tools": {
+      "move_forward": {"enabled": true, "default_speed": 0.5},
+      "move_backward": {"enabled": true, "default_speed": 0.5},
+      "move_left": {"enabled": true, "default_speed": 0.5},
+      "move_right": {"enabled": true, "default_speed": 0.5},
+      "rotate": {"enabled": true, "default_angle": 90},
+      "stop": {"enabled": true},
+      "execute_action": {"enabled": true},
+      "get_status": {"enabled": true},
+      "list_actions": {"enabled": true},
+      "set_speed": {"enabled": true, "min_speed": 0.1, "max_speed": 1.0}
+    },
+    
+    "tools_execution": {
+      "require_confirmation": false,
+      "max_concurrent_tools": 1,
+      "timeout_seconds": 30
+    }
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/robot_control.log",
+    "max_size": 10485760,
+    "backup_count": 5,
+    "console_output": true
+  },
+  
+  "safety": {
+    "max_continuous_movement_time": 60.0,
+    "speed_limit": 0.8,
+    "emergency_stop_keywords": ["emergency stop", "help", "stop"],
+    "movement_timeout_protection": true,
+    "collision_detection": false,
+    "allowed_sender_ids": [],
+    "rate_limit_exceeded_action": "ignore"
+  },
+  
+  "database": {
+    "enabled": false,
+    "type": "sqlite",
+    "path": "data/commands.db",
+    "max_history_entries": 1000,
+    "auto_cleanup_days": 30
+  },
+  
+  "network": {
+    "connection_retries": 3,
+    "retry_delay_seconds": 2,
+    "heartbeat_interval_seconds": 30,
+    "timeout_seconds": 10
+  },
+  
+  "web_interface": {
+    "enabled": false,
+    "port": 5000,
+    "username": "admin",
+    "password": "admin123"
+  },
+  
+  "notifications": {
+    "enabled": false,
+    "on_connection": true,
+    "on_disconnection": true,
+    "on_error": true,
+    "notification_webhook": ""
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "robot": {
+    "type": "go1",
+    "default_speed": 0.5,
+    "max_speed": 1.0,
+    "connection_timeout": 10
+  },
+  
+  "whatsapp": {
+    "enabled": true,
+    "port": 8080,
+    "verify_token": "your_verify_token_here",
+    "phone_number_id": "your_phone_number_id",
+    
+    "security": {
+      "validate_signatures": true,
+      "allowed_senders": []
+    },
+    
+    "response": {
+      "use_markdown": true,
+      "max_message_length": 4096
+    }
+  },
+  
+  "predefined_actions": {
+    "wave": {
+      "enabled": true,
+      "duration": 2.0,
+      "speed": 0.3
+    },
+    "bow": {
+      "enabled": true,
+      "speed": 0.2
+    },
+    "dance": {
+      "enabled": true,
+      "duration": 10.0,
+      "speed": 0.4
+    },
+    "walk_around": {
+      "enabled": true,
+      "duration": 30.0,
+      "speed": 0.4
+    },
+    "circle": {
+      "enabled": true,
+      "direction": "left",
+      "radius": 1.0,
+      "speed": 0.3
+    }
+  },
+  
+  "openclaw": {
+    "enabled": true,
+    "agent_prompt": "You are a helpful assistant for controlling a Unitree robot through WhatsApp.",
+    "tools": {
+      "move_forward": {"enabled": true},
+      "move_backward": {"enabled": true},
+      "move_left": {"enabled": true},
+      "move_right": {"enabled": true},
+      "rotate": {"enabled": true},
+      "stop": {"enabled": true},
+      "execute_action": {"enabled": true},
+      "get_status": {"enabled": true},
+      "list_actions": {"enabled": true}
+    }
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/robot_control.log",
+    "max_size": 10485760,
+    "backup_count": 5
+  },
+  
+  "safety": {
+    "max_continuous_movement_time": 60.0,
+    "speed_limit": 0.8,
+    "emergency_stop_keyword": "emergency stop",
+    "allowed_sender_ids": []
+  },
+  
+  "database": {
+    "enabled": false,
+    "type": "sqlite",
+    "path": "data/commands.db"
+  }
+}
