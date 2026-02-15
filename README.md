@@ -1,260 +1,239 @@
 # OpenClaw-Robotics
 
-**The Unified Execution Layer for Embodied AI: From Messaging to Motion.**
+**2026年实现Visual SLAM + Insight9深度集成 + TinyNav导航**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://www.python.org/)
-[![Hardware](https://img.shields.io/badge/Hardware-Unitree-orange.svg)](https://www.unitree.com/)
 
-## 🚀 Overview
+## 🎯 项目愿景
 
-**OpenClaw-Robotics** is a high-performance, unified control framework designed for the **Embodied AI** era. It bridges the gap between high-level communication interfaces and physical execution, providing a standardized "Action Layer" for complex robotic platforms.
+**让机器人控制像导入Python库一样简单**
 
-This release focuses on providing robust, out-of-the-box support for **Unitree robots** (GO1, GO2, G1) via WhatsApp, with a modular architecture ready for expansion to other platforms.
-
-### ✨ Key Features
-* **WhatsApp Teleop**: Real-time robot maneuvering via ubiquitous messaging.
-* **Multi-Robot Support**: Unified interface for quadruped and humanoid robots.
-* **Extensible Architecture**: Designed to support other robot brands and future SLAM capabilities.
-* **OpenClaw Integration**: Seamless connection to perception agents and LLM planners.
+- ✅ **即插即用**：不同型号机器人像插件一样自由导入
+- 🚀 **2026目标**：Visual SLAM + Insight9深度集成 + TinyNav导航
+- 🎯 **零配置**：无需修改核心代码，开箱即用
 
 ---
 
-## 🤖 Supported Robots
+## 🐾 插件式机器人支持
 
-### ✅ Currently Supported (v1.0.x)
+```python
+# 就像导入Python库一样简单！
+from openclaw_robotics.robots import GO1, GO2, G1
 
-| Robot | Type | Status | Features |
-|-------|------|--------|----------|
-| **GO1** | Quadruped | ✅ Ready | Basic locomotion, predefined actions |
-| **GO2** | Quadruped | ✅ Ready | Enhanced locomotion, running gait |
-| **G1** | Humanoid | ✅ Ready | Bipedal walk, humanoid-specific actions |
+# 自动检测连接 - 无需指定型号
+robot = GO1.auto_connect()
 
-### 🚧 Coming Soon (v1.1.x)
+# 或手动选择
+robot = GO2.connect()
+robot = G1.connect()
 
-| Robot | Type | Status | ETA |
-|-------|------|--------|-----|
-| **B2** | Quadruped | In Progress | Q2 2026 |
-| **H1** | Humanoid | Planned | Q3 2026 |
-
-### 🎯 Future Support (v2.0+)
-
-| Brand | Robot | Priority | Status |
-|-------|-------|----------|--------|
-| Boston Dynamics | Spot | High | Researching |
-| Agility Robotics | Cassie | Medium | Researching |
-| ANYbotics | ANYmal | Medium | Researching |
-
----
-
-## 🛠 Project Structure
-
-```bash
-OpenClaw-Robotics/
-├── src/
-│   ├── robot_controller.py      # Core controller (v1.0)
-│   │   ├── GO1Driver           # GO1 support
-│   │   ├── GO2Driver           # GO2 support  
-│   │   └── G1Driver            # G1 support
-│   ├── whatsapp_handler.py      # Message parsing
-│   ├── whatsapp_integration.py   # WhatsApp API
-│   └── openclaw_interface.py    # OpenClaw integration
-├── examples/                     # Usage examples
-├── tests/                       # Unit tests
-├── docs/                        # Documentation
-│   ├── ROADMAP.md             # Development roadmap
-│   └── QUICK_START.md         # 5-min quick start
-└── configs/                    # Configuration files
+# 控制
+robot.forward(0.5)
+robot.rotate(45)
+robot.execute("wave")
 ```
 
+### ✅ 已支持型号
+
+| 型号 | 类型 | 导入语句 |
+|------|------|----------|
+| GO1 | 四足 | `from openclaw_robotics.robots import GO1` |
+| GO2 | 四足 | `from openclaw_robotics.robots import GO2` |
+| G1 | 人形 | `from openclaw_robotics.robots import G1` |
+
 ---
 
-## ⚡ Quick Start
+## 📷 Insight9相机集成 (Q1-Q2)
 
-### 1. Prerequisites
-- **Python 3.8+**
-- **Unitree Python SDK** (for real robot control)
-- **WhatsApp Business Account** (for messaging)
+```python
+from openclaw_robotics.sensors import Insight9Pro
 
-### 2. Installation
+# 一行代码启用SLAM
+camera = Insight9Pro.auto_connect()
+
+# 深度数据直接给SLAM使用
+slam = camera.enable_slam()  # 自动对接ORB-SLAM3
+```
+
+### Insight9系列
+
+| 型号 | 分辨率 | 深度范围 | SLAM支持 |
+|------|--------|----------|----------|
+| V1 | 720P | 0.2-3m | ✅ |
+| Pro | 1080P | 0.1-10m | ✅ |
+| Max | 1440P | 0.05-15m | ✅ |
+
+---
+
+## 🗺️ Visual SLAM (Q1-Q2)
+
+```python
+from openclaw_robotics.slam import SLAM
+
+# 自动检测Insight9并初始化SLAM
+slam = SLAM.auto_init(sensor="insight9_pro")
+
+# 获取位姿
+pose = slam.get_pose()
+
+# 保存/加载地图
+slam.save_map("office_map.bin")
+slam.load_map("office_map.bin")
+```
+
+### 支持的SLAM算法
+
+- **ORB-SLAM3** - 特征点法，功能完整
+- **VINS-Fusion** - 视觉惯性，紧凑高效
+
+---
+
+## 🧭 TinyNav导航 (Q3-Q4)
+
+```python
+from openclaw_robotics.navigation import Navigator
+
+# 创建导航器
+nav = Navigator(robot=robot, slam=slam)
+
+# 点对点导航
+nav.navigate(goal=(3.0, 2.0, 0.0))  # x, y, theta
+
+# 区域巡航
+nav.cruise(area="living_room")
+
+# 语义导航
+nav.semantic_navigate("go to kitchen")
+```
+
+### 导航特性
+
+- A*全局规划
+- DWA局部避障
+- 语义标签导航
+- 任务序列
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装
 ```bash
 git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
 cd OpenClaw-Robotics
 pip install -r requirements.txt
 ```
 
-### 3. Connect to Robot
+### 2. 一行代码控制机器人
 ```python
-from src.robot_controller import UnitreeRobotController
+from openclaw_robotics.robots import auto_connect
 
-# For GO1
-controller = UnitreeRobotController(robot_type="go1")
-
-# For GO2
-controller = UnitreeRobotController(robot_type="go2")
-
-# For G1 (Humanoid)
-controller = UnitreeRobotController(robot_type="g1")
-
-# Connect
-if controller.connect():
-    print("Connected!")
+robot = auto_connect()  # 自动检测型号
+robot.forward(0.5)
 ```
 
-### 4. Control via WhatsApp
-```
-# Basic Movement
-forward 0.5     # Move forward at 50% speed
-backward 0.3    # Move backward
-left 0.6        # Move left
-right 0.6       # Move right
-rotate left 90   # Rotate left 90°
-rotate right 45  # Rotate right 45°
-stop            # Stop all movement
-
-# Predefined Actions
-action wave        # Wave gesture
-action dance       # Dance routine
-action walk_around # Walk around area
-
-# G1 Humanoid Specific
-action walk        # Bipedal walking
-action squat       # Squat movement
-action turn_around # Turn around in place
-```
-
----
-
-## 📖 Documentation
-
-- **[README.md](README.md)** - This file
-- **[docs/QUICK_START.md](docs/QUICK_START.md)** - 5-minute quick start
-- **[docs/ROADMAP.md](docs/ROADMAP.md)** - Detailed development roadmap
-
----
-
-## 🗺 Roadmap
-
-### Version 1.0.x ✅ Current
-Focus: Core functionality and GO1/GO2/G1 support
-- [x] Basic movement control
-- [x] WhatsApp integration
-- [x] Predefined actions
-- [x] GO1 support
-- [x] GO2 support
-- [x] G1 humanoid support
-
-### Version 1.1.x 🚧 Next
-Focus: B2/H1 support and architecture improvements
-- [ ] Unitree B2 driver
-- [ ] Unitree H1 driver
-- [ ] Code refactoring
-- [ ] Performance optimization
-- [ ] Enhanced test coverage
-
-### Version 2.0.x 🎯 Future
-Focus: Multi-brand expansion
-- [ ] Abstract hardware layer
-- [ ] Boston Dynamics Spot driver
-- [ ] Agility Robotics driver
-- [ ] Generic robot interface
-
-### Version 3.0.x 🚀 Vision
-Focus: SLAM and autonomous navigation
-- [ ] Lidar SLAM integration
-- [ ] Visual SLAM support
-- [ ] Map building and storage
-- [ ] Autonomous navigation
-- [ ] Task scheduling
-
----
-
-## 📊 Robot Capabilities
-
-### GO1 / GO2 (Quadruped)
-```
-✅ Forward/Backward/Left/Right
-✅ Rotation (Left/Right)
-✅ Speed control (0-100%)
-✅ Predefined actions (wave, bow, dance, etc.)
-✅ GO2 enhanced: running gait, enhanced speed
-```
-
-### G1 (Humanoid)
-```
-✅ All quadruped movements
-✅ Bipedal walking
-✅ Humanoid actions:
-   - Wave, Bow, Stretch
-   - Sit, Stand
-   - Turn around
-   - Squat
-```
-
----
-
-## 🔌 Integration
-
-### OpenClaw Integration
+### 3. 启用SLAM (Q2)
 ```python
-from src.openclaw_interface import OpenClawRobotInterface
+from openclaw_robotics.slam import auto_init_slam
 
-interface = OpenClawRobotInterface(
-    controller=robot_controller,
-    predefined_actions=actions,
-    message_handler=handler
-)
-
-# Execute via OpenClaw tools
-result = interface.execute_tool("move_forward", speed=0.7)
+slam = auto_init_slam()  # 自动检测Insight9
+pose = slam.get_pose()
 ```
 
-### WhatsApp Setup
-1. Create WhatsApp Business Account
-2. Configure webhooks
-3. Set environment variables:
-   ```bash
-   export WHATSAPP_ACCESS_TOKEN="your_token"
-   export WHATSAPP_PHONE_NUMBER_ID="your_phone_id"
-   ```
+### 4. 开始导航 (Q4)
+```python
+from openclaw_robotics.navigation import Navigator
 
----
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test
-pytest tests/test_robot_control.py::TestGO1Driver -v
-
-# With coverage
-pytest tests/ --cov=src --cov-report=html
+nav = Navigator(robot, slam)
+nav.navigate(goal=(5.0, 3.0, 0))
 ```
 
 ---
 
-## 🤝 Contributing
+## 📁 项目结构
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+```
+OpenClaw-Robotics/
+├── src/
+│   ├── core/                    # 核心框架
+│   │   └── plugin_system.py     # 插件系统
+│   ├── robots/                 # 机器人插件
+│   │   ├── __init__.py        # 自动导入
+│   │   ├── go1/               # GO1插件
+│   │   ├── go2/               # GO2插件
+│   │   └── g1/                # G1插件
+│   ├── sensors/                # 传感器插件
+│   │   └── insight9/          # Insight9系列
+│   ├── slam/                   # SLAM模块
+│   │   └── visual_slam.py     # Visual SLAM
+│   └── navigation/              # 导航模块
+│       └── tinynav/            # TinyNav
+├── plugins/
+│   ├── __init__.py           # 自动注册
+│   └── auto_import.py         # 智能导入
+├── configs/                    # 配置模板
+├── examples/                   # 使用示例
+└── docs/
+    └── ROADMAP.md            # 2026路线图
+```
 
 ---
 
-## 📄 License
+## 📖 文档
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/LooperRobotics/OpenClaw-Robotics/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/LooperRobotics/OpenClaw-Robotics/discussions)
-- **Docs**: [docs/](docs/)
+- **[ROADMAP.md](docs/ROADMAP.md)** - 2026年详细路线图
+- **[examples/](examples/)** - 使用示例
+- **API Docs** - 待发布
 
 ---
 
-**Built with ❤️ for the Embodied AI community**
+## 🗓️ 2026年时间表
 
-*Last updated: 2026-02-15*
+### Q1-Q2: Visual SLAM
+- [x] 基础架构
+- [ ] ORB-SLAM3集成
+- [ ] Insight9 Pro/Max支持
+- [ ] 实时地图构建
+
+### Q3-Q4: TinyNav导航
+- [ ] A*路径规划
+- [ ] 避障算法
+- [ ] 语义导航
+- [ ] 完整导航系统
+
+---
+
+## 🤝 贡献指南
+
+### 添加新机器人插件
+```python
+# plugins/robots/my_robot.py
+from openclaw_robotics.core import RobotPlugin
+
+class MyRobotDriver(RobotPlugin):
+    PLUGIN_NAME = "my_robot"
+    # 实现 connect(), move() 等方法
+```
+
+### 添加新传感器插件
+```python
+# plugins/sensors/my_sensor.py
+from openclaw_robotics.core import SensorPlugin
+
+class MySensorDriver(SensorPlugin):
+    PLUGIN_NAME = "my_sensor"
+    # 实现 read(), calibrate() 等方法
+```
+
+---
+
+## 📄 许可证
+
+MIT License - 详见 [LICENSE](LICENSE)
+
+---
+
+**让机器人控制变得简单** 🤖✨
+
+*2026年目标：Visual SLAM + Insight9 + TinyNav*
