@@ -1,25 +1,15 @@
-#!/usr/bin/env python3
-"""
-OpenClaw-Robotics Robot Plugins
+"""Robot adapters"""
 
-Available robot drivers:
-- GO1: Consumer quadruped robot
-- GO2: Professional quadruped robot
-- G1: Humanoid robot
+from .robot_adapter import RobotAdapter, RobotState, TaskResult, RobotType
 
-Usage:
-    from openclaw_robotics.robots import GO1, GO2, G1
-    
-    robot = GO1.connect()
-    robot.forward(0.5)
-"""
+# Quadruped
+from .quadruped.unitree import UnitreeGO1Adapter, UnitreeGO2Adapter, UnitreeAliAdapter
 
-from .go1 import GO1Driver, GO1Config
-from .go2 import GO2Driver, GO2Config
-from .g1 import G1Driver, G1Config
+# Humanoid
+from .humanoid.unitree import UnitreeG1Adapter, UnitreeH1Adapter
 
 __all__ = [
-    'GO1Driver', 'GO1Config',
-    'GO2Driver', 'GO2Config',
-    'G1Driver', 'G1Config',
+    "RobotAdapter", "RobotState", "TaskResult", "RobotType",
+    "UnitreeGO1Adapter", "UnitreeGO2Adapter", "UnitreeAliAdapter",
+    "UnitreeG1Adapter", "UnitreeH1Adapter"
 ]

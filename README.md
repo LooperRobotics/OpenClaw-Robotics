@@ -1,152 +1,102 @@
-# OpenClaw-Robotics
+<!-- PROJECT Badge -->
+<div align="center">
+  <img src="https://img.shields.io/badge/OpenClaw-Robotics-v2.0-blue?style=for-the-badge&logo=robot" alt="OpenClaw Robotics">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge" alt="Python">
+</div>
 
-**2026: Visual SLAM + Insight9 Integration + TinyNav Navigation**
+<br>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://www.python.org/)
-
-## 🎯 Project Vision
-
-**Robot control as simple as importing a Python library**
-
-- ✅ **Plug & Play**: Different robot models like plugins, free to import
-- 🚀 **2026 Goals**: Visual SLAM + Insight9 Deep Integration + TinyNav Navigation
-- 🎯 **Zero Config**: Works out of the box, no core code modifications needed
-
----
-
-## 🐾 Plugin-Based Robot Support
-
-```python
-# As simple as importing a Python library!
-from openclaw_robotics.robots import GO1, GO2, G1
-
-# Auto-detect and connect - no model specification needed
-robot = GO1.auto_connect()
-
-# Or manually select
-robot = GO2.connect()
-robot = G1.connect()
-
-# Control
-robot.forward(0.5)
-robot.rotate(45)
-robot.execute("wave")
-```
-
-### ✅ Supported Models
-
-| Model | Type | Import Statement |
-|-------|------|------------------|
-| GO1 | Quadruped | `from openclaw_robotics.robots import GO1` |
-| GO2 | Quadruped | `from openclaw_robotics.robots import GO2` |
-| G1 | Humanoid | `from openclaw_robotics.robots import G1` |
+<p align="center">
+  <strong>Control robots via instant messaging (WeChat, WhatsApp, Telegram)</strong>
+  <br>
+  One skill, infinite possibilities for embodied AI robots
+</p>
 
 ---
 
-## 📷 Insight9 Camera Integration (Q1-Q2)
+## 🚀 Overview
 
-```python
-from openclaw_robotics.sensors import Insight9Pro
+**OpenClaw-Robotics** is a comprehensive framework for controlling robots through instant messaging apps using the OpenClaw ecosystem.
 
-# One line to enable SLAM
-camera = Insight9Pro.auto_connect()
-
-# Depth data directly for SLAM
-slam = camera.enable_slam()  # Auto对接ORB-SLAM3
+```
+User (IM App) ──► OpenClaw Skill ──► Robot Adapter ──► Physical Robot
+   ↑                        │
+   └────────────────────────┘
+        (Response/Feedback)
 ```
 
-### Insight9 Series
+### Core Features
 
-| Model | Resolution | Depth Range | SLAM Support |
-|-------|------------|-------------|--------------|
-| V1 | 720P | 0.2-3m | ✅ |
-| Pro | 1080P | 0.1-10m | ✅ |
-| Max | 1440P | 0.05-15m | ✅ |
+- 🌐 **Multi-IM Support**: WeChat, WeCom, WhatsApp, Telegram
+- 🤖 **Multi-Robot Support**: Quadrupeds, Humanoids, Wheeled, Aerial, Surface
+- 📷 **Sensor Integration**: RGB-D cameras, LiDAR, IMU (with deep Insight9 support)
+- 🗺️ **VSLAM & Navigation**: Real-time mapping, path planning, obstacle avoidance
+- 🎯 **Natural Language Control**: Parse commands like "forward 1m then turn left"
 
 ---
 
-## 🗺️ Visual SLAM (Q1-Q2)
+## 📦 Supported Hardware
 
-```python
-from openclaw_robotics.slam import SLAM
+### 🤖 Robots
 
-# Auto-detect Insight9 and initialize SLAM
-slam = SLAM.auto_init(sensor="insight9_pro")
+| Brand | Model | Type | Status |
+|-------|-------|------|--------|
+| Unitree | GO1 | Quadruped | ✅ |
+| Unitree | GO2 | Quadruped | ✅ |
+| Unitree | Ali | Quadruped | ✅ |
+| Unitree | G1 | Humanoid | ✅ |
+| Unitree | H1 | Humanoid | ✅ |
+| (More) | Coming... | Wheeled/Aerial | ⏳ |
 
-# Get pose
-pose = slam.get_pose()
+### 📷 Sensors
 
-# Save/load map
-slam.save_map("office_map.bin")
-slam.load_map("office_map.bin")
-```
+| Sensor | Type | Status |
+|--------|------|--------|
+| **Insight9 Pro** | RGB-D Camera | ✅ |
+| **Insight9 Max** | RGB-D Camera (4K) | ✅ |
+| LiDAR | Distance | ⏳ |
+| IMU | Inertial | ⏳ |
 
-### Supported SLAM Algorithms
+### 💬 IM Channels
 
-- **ORB-SLAM3** - Feature-based, full-featured
-- **VINS-Fusion** - Visual-inertial, compact & efficient
-
----
-
-## 🧭 TinyNav Navigation (Q3-Q4)
-
-```python
-from openclaw_robotics.navigation import Navigator
-
-# Create navigator
-nav = Navigator(robot=robot, slam=slam)
-
-# Point-to-point navigation
-nav.navigate(goal=(3.0, 2.0, 0.0))  # x, y, theta
-
-# Area cruise
-nav.cruise(area="living_room")
-
-# Semantic navigation
-nav.semantic_navigate("go to kitchen")
-```
-
-### Navigation Features
-
-- A* Global Planning
-- DWA Local Obstacle Avoidance
-- Semantic Label Navigation
-- Task Sequences
+| Channel | Status |
+|---------|--------|
+| WeChat (个人微信) | ✅ |
+| WeCom (企业微信) | ✅ |
+| WhatsApp | ✅ |
+| Telegram | ✅ |
 
 ---
 
-## 🚀 Quick Start
+## 🏗️ Architecture
 
-### 1. Install
-```bash
-git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
-cd OpenClaw-Robotics
-pip install -r requirements.txt
 ```
-
-### 2. Control Robot (One Line)
-```python
-from openclaw_robotics.robots import auto_connect
-
-robot = auto_connect()  # Auto-detect model
-robot.forward(0.5)
-```
-
-### 3. Enable SLAM (Q2)
-```python
-from openclaw_robotics.slam import auto_init_slam
-
-slam = auto_init_slam()  # Auto-detect Insight9
-pose = slam.get_pose()
-```
-
-### 4. Start Navigation (Q4)
-```python
-from openclaw_robotics.navigation import Navigator
-
-nav = Navigator(robot, slam)
-nav.navigate(goal=(5.0, 3.0, 0))
+┌─────────────────────────────────────────────────────────────┐
+│                    IM Adapters (src/im/)                    │
+│  ┌────────┐ ┌────────┐ ┌──────────┐ ┌──────────┐          │
+│  │WeChat  │ │ WeCom  │ │ WhatsApp │ │ Telegram │          │
+│  └────────┘ └────────┘ └──────────┘ └──────────┘          │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Skill (src/skill.py)                     │
+│              Command Parser + Task Executor                 │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+         ┌─────────────────┼─────────────────┐
+         ▼                 ▼                 ▼
+┌─────────────────┐ ┌───────────────┐ ┌─────────────────┐
+│ Robots (src/    │ │ Sensors (src/ │ │ SLAM (src/     │
+│   robots/)      │ │   sensors/)   │ │   slam/)       │
+│                 │ │               │ │                 │
+│ • quadruped     │ │ • Insight9    │ │ • Visual SLAM  │
+│ • humanoid      │ │ • LiDAR       │ │ • Navigation   │
+│ • wheeled       │ │ • IMU         │ │ • Mapping      │
+│ • aerial        │ │               │ │                 │
+│ • surface       │ │               │ │                 │
+└─────────────────┘ └───────────────┘ └─────────────────┘
 ```
 
 ---
@@ -155,76 +105,143 @@ nav.navigate(goal=(5.0, 3.0, 0))
 
 ```
 OpenClaw-Robotics/
+├── README.md                    # This file
+├── main.py                      # Main entry point
+├── configs/
+│   └── config.example.json      # Configuration template
+│
 ├── src/
-│   ├── core/                    # Core framework
-│   │   └── plugin_system.py     # Plugin system
-│   ├── robots/                 # Robot plugins
-│   │   ├── __init__.py        # Auto import
-│   │   ├── go1/               # GO1 plugin
-│   │   ├── go2/               # GO2 plugin
-│   │   └── g1/                # G1 plugin
-│   ├── sensors/                # Sensor plugins
-│   │   └── insight9/          # Insight9 series
-│   ├── slam/                   # SLAM module
-│   │   └── visual_slam.py     # Visual SLAM
-│   └── navigation/              # Navigation module
-│       └── tinynav/           # TinyNav
-├── plugins/
-│   ├── __init__.py           # Auto register
-│   └── auto_import.py        # Smart import
-├── configs/                    # Config templates
-├── examples/                   # Usage examples
-└── docs/
-    └── ROADMAP.md            # 2026 roadmap
+│   ├── skill.py                 # Main skill entry
+│   ├── robot_factory.py         # Robot factory
+│   │
+│   ├── im/                      # IM adapters
+│   │   ├── im_adapter.py        # Base class
+│   │   ├── wechat.py            # WeChat
+│   │   ├── wecom.py             # WeCom
+│   │   ├── whatsapp.py          # WhatsApp
+│   │   └── telegram.py          # Telegram
+│   │
+│   ├── robots/                  # Robot adapters
+│   │   ├── robot_adapter.py     # Base class
+│   │   ├── quadruped/           # Quadruped robots
+│   │   │   └── unitree.py       # GO1, GO2, Ali
+│   │   ├── humanoid/            # Humanoid robots
+│   │   │   └── unitree.py       # G1, H1
+│   │   ├── wheeled/             # Wheeled robots (future)
+│   │   ├── aerial/              # Aerial robots (future)
+│   │   └── surface/             # Surface vehicles (future)
+│   │
+│   ├── sensors/                 # Sensor adapters
+│   │   ├── sensor_adapter.py    # Base class
+│   │   └── insight9/            # Insight9 camera
+│   │       └── insight9_adapter.py
+│   │
+│   └── slam/                    # SLAM & Navigation
+│       └── visual_slam.py       # VSLAM + Navigator
+│
+├── examples/                    # Usage examples
+│   ├── basic_control.py
+│   └── im_integration.py
+│
+└── tests/                       # Tests
+    └── test_robot_control.py
 ```
 
 ---
 
-## 📖 Documentation
+## 🛠️ Quick Start
 
-- **[ROADMAP.md](docs/ROADMAP.md)** - Detailed 2026 roadmap
-- **[examples/](examples/)** - Usage examples
-- **API Docs** - Coming soon
+### 1. Installation
 
----
+```bash
+git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
+cd OpenClaw-Robotics
+pip install -r requirements.txt
+```
 
-## 🗓️ 2026 Timeline
+### 2. Configuration
 
-### Q1-Q2: Visual SLAM
-- [x] Base architecture
-- [ ] ORB-SLAM3 integration
-- [ ] Insight9 Pro/Max support
-- [ ] Real-time map building
+```bash
+cp configs/config.example.json configs/config.json
+# Edit config.json with your settings
+```
 
-### Q3-Q4: TinyNav Navigation
-- [ ] A* Path planning
-- [ ] Obstacle avoidance
-- [ ] Semantic navigation
-- [ ] Complete navigation system
+### 3. Initialize Robot + IM
 
----
-
-## 🤝 Contributing Guide
-
-### Add New Robot Plugin
 ```python
-# plugins/robots/my_robot.py
-from openclaw_robotics.core import RobotPlugin
+from src.skill import initialize, execute, get_status
 
-class MyRobotDriver(RobotPlugin):
-    PLUGIN_NAME = "my_robot"
-    # Implement connect(), move() methods
+# Initialize
+result = initialize(
+    robot="unitree_go2",
+    robot_ip="192.168.12.1", 
+    im="wecom",
+    config={"corp_id": "your_corp_id", ...}
+)
+print(result)
 ```
 
-### Add New Sensor Plugin
+### 4. Control Robot via IM
+
+Once configured, simply send commands through WeChat/WhatsApp:
+
+| Command | Action |
+|---------|--------|
+| `往前走1米` | Move forward 1m |
+| `左转45度` | Turn left 45° |
+| `站立` | Stand up |
+| `坐下` | Sit down |
+| `挥手` | Wave hand |
+| `往前走然后左转` | Compound command |
+
+---
+
+## 🔧 Adding New Robots
+
 ```python
-# plugins/sensors/my_sensor.py
-from openclaw_robotics.core import SensorPlugin
+from src.robot_adapter import RobotAdapter, RobotState, TaskResult, RobotType
 
-class MySensorDriver(SensorPlugin):
-    PLUGIN_NAME = "my_sensor"
-    # Implement read(), calibrate() methods
+class MyRobotAdapter(RobotAdapter):
+    ROBOT_CODE = "myrobot_x1"
+    ROBOT_NAME = "MyRobot X1"
+    BRAND = "MyBrand"
+    ROBOT_TYPE = RobotType.QUADRUPED
+    
+    def connect(self) -> bool:
+        # Implement connection
+        return True
+    
+    # ... implement abstract methods
 ```
+
+Register it:
+
+```python
+from src.robot_factory import RobotFactory
+RobotFactory.register("myrobot_x1")(MyRobotAdapter)
+```
+
+---
+
+## 🎯 Roadmap
+
+See [ROADMAP.md](docs/ROADMAP.md) for detailed development plan.
+
+### 2026 Q1-Q2
+- [ ] Insight9 VSLAM integration
+- [ ] Navigation (A* + DWA)
+- [ ] Multi-robot coordination
+
+### 2026 Q3-Q4
+- [ ] Wheeled robot support
+- [ ] Aerial robot support
+- [ ] Advanced SLAM algorithms
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -234,6 +251,12 @@ MIT License - See [LICENSE](LICENSE)
 
 ---
 
-**Making robot control simple** 🤖✨
+## 👨‍💻 Authors
 
-*2026 Goals: Visual SLAM + Insight9 + TinyNav*
+- **LooperRobotics** - [github.com/LooperRobotics](https://github.com/LooperRobotics)
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ by LooperRobotics | Powered by OpenClaw</sub>
+</div>
