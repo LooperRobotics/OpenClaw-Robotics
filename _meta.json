@@ -1,0 +1,16 @@
+{
+  "name": "unitree-robot",
+  "version": "2.1.0",
+  "description": "Control mobile robots (quadruped, bipedal, wheeled, aerial) via IM platforms. Supports Unitree robots, Insight9 camera, TinyNav navigation.",
+  "author": "LooperRobotics",
+  "license": "MIT",
+  "homepage": "https://github.com/LooperRobotics/OpenClaw-Robotics",
+  "keywords": ["robotics", "mobile-robot", "quadruped", "bipedal", "drone", "im-control", "insight9", "tinynav"],
+  "openclaw": {
+    "emoji": "🤖",
+    "requires": {
+      "python": ">=3.8",
+      "pip": ["numpy"]
+    }
+  }
+}
