@@ -47,22 +47,15 @@ robot.execute("wave")
 ## 📷 Insight9 Camera Integration (Q1-Q2)
 
 ```python
-from openclaw_robotics.sensors import Insight9Pro
+from openclaw_robotics.sensors import Insight9
 
 # One line to enable SLAM
-camera = Insight9Pro.auto_connect()
+camera = Insight9.auto_connect()
 
 # Depth data directly for SLAM
-slam = camera.enable_slam()  # Auto对接ORB-SLAM3
+slam = camera.enable_slam()  # Built-in VSLAM from Insight 9
 ```
-
-### Insight9 Series
-
-| Model | Resolution | Depth Range | SLAM Support |
-|-------|------------|-------------|--------------|
-| V1 | 720P | 0.2-3m | ✅ |
-| Pro | 1080P | 0.1-10m | ✅ |
-| Max | 1440P | 0.05-15m | ✅ |
+|
 
 ---
 
@@ -82,10 +75,6 @@ slam.save_map("office_map.bin")
 slam.load_map("office_map.bin")
 ```
 
-### Supported SLAM Algorithms
-
-- **ORB-SLAM3** - Feature-based, full-featured
-- **VINS-Fusion** - Visual-inertial, compact & efficient
 
 ---
 
