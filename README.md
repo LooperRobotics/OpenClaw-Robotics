@@ -1,6 +1,5 @@
 # OpenClaw-Robotics
 
-**2026: Visual SLAM + Insight9 Integration + TinyNav Navigation**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://www.python.org/)
@@ -10,7 +9,6 @@
 **Robot control as simple as importing a Python library**
 
 - ✅ **Plug & Play**: Different robot models like plugins, free to import
-- 🚀 **2026 Goals**: Visual SLAM + Insight9 Deep Integration + TinyNav Navigation
 - 🎯 **Zero Config**: Works out of the box, no core code modifications needed
 
 ---
@@ -44,21 +42,6 @@ robot.execute("wave")
 
 ---
 
-## 📷 Insight9 Camera Integration (Q1-Q2)
-
-```python
-from openclaw_robotics.sensors import Insight9
-
-# One line to enable SLAM
-camera = Insight9.auto_connect()
-
-# Depth data directly for SLAM
-slam = camera.enable_slam()  # Built-in VSLAM from Insight 9
-```
-|
-
----
-
 ## 🗺️ Visual SLAM (Q1-Q2)
 
 ```python
@@ -75,26 +58,6 @@ slam.save_map("office_map.bin")
 slam.load_map("office_map.bin")
 ```
 
-
----
-
-## 🧭 TinyNav Navigation (Q3-Q4)
-
-```python
-from openclaw_robotics.navigation import Navigator
-
-# Create navigator
-nav = Navigator(robot=robot, slam=slam)
-
-# Point-to-point navigation
-nav.navigate(goal=(3.0, 2.0, 0.0))  # x, y, theta
-
-# Area cruise
-nav.cruise(area="living_room")
-
-# Semantic navigation
-nav.semantic_navigate("go to kitchen")
-```
 
 ### Navigation Features
 
@@ -179,9 +142,9 @@ OpenClaw-Robotics/
 
 ## 🗓️ 2026 Timeline
 
-### Q1-Q2: Visual SLAM
+### Q2-Q3: Visual SLAM
 - [x] Base architecture
-- [ ] ORB-SLAM3 integration
+- [ ] VSLAM integration
 - [ ] Insight9 Pro/Max support
 - [ ] Real-time map building
 
