@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-GO1 Robot Plugin for OpenClaw-Robotics
-
 Unitree GO1 quadruped robot driver.
 
 Usage:
@@ -16,7 +14,7 @@ import time
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
 
-# 导入核心基类
+# Import core base class
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -44,7 +42,7 @@ class GO1Driver(PluginBase):
     PLUGIN_DESCRIPTION = "Unitree GO1 quadruped robot driver"
     PLUGIN_TYPE = PluginType.ROBOT
     
-    # 兼容性
+    # Compatibility
     COMPATIBLE_ROBOTS = ["go1"]
     
     def __init__(self, config: GO1Config = None):
@@ -60,7 +58,7 @@ class GO1Driver(PluginBase):
     def connect(self) -> bool:
         """Connect to GO1 robot"""
         try:
-            # 尝试连接真实机器人
+            # Try to connect to real robot
             # from unitree_sdk2py import Robot
             # self._robot = Robot()
             print("Connecting to GO1...")
@@ -187,7 +185,7 @@ class GO1Driver(PluginBase):
         self.config.speed_limit = max(0.0, min(1.0, limit))
 
 
-# 便捷函数
+# Convenience function
 def auto_connect() -> GO1Driver:
     """Auto-connect to GO1"""
     robot = GO1Driver()
@@ -195,7 +193,7 @@ def auto_connect() -> GO1Driver:
     return robot
 
 
-# ==================== 导出 ====================
+# ==================== Exports ====================
 
 __all__ = ['GO1Driver', 'GO1Config', 'auto_connect']
 
@@ -206,10 +204,10 @@ if __name__ == "__main__":
     print("GO1 Robot Plugin Demo")
     print("=" * 60)
     
-    # 创建并连接
+    # Create and connect
     robot = auto_connect()
     
-    # 控制演示
+    # Control demo
     print("\nDemo movements:")
     robot.forward(0.5)
     robot.rotate(45)

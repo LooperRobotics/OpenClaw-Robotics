@@ -1,65 +1,65 @@
 # OpenClaw-Robotics
 
-**2026年实现Visual SLAM + Insight9深度集成 + TinyNav导航**
+**2026: Visual SLAM + Insight9 Integration + TinyNav Navigation**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://www.python.org/)
 
-## 🎯 项目愿景
+## 🎯 Project Vision
 
-**让机器人控制像导入Python库一样简单**
+**Robot control as simple as importing a Python library**
 
-- ✅ **即插即用**：不同型号机器人像插件一样自由导入
-- 🚀 **2026目标**：Visual SLAM + Insight9深度集成 + TinyNav导航
-- 🎯 **零配置**：无需修改核心代码，开箱即用
+- ✅ **Plug & Play**: Different robot models like plugins, free to import
+- 🚀 **2026 Goals**: Visual SLAM + Insight9 Deep Integration + TinyNav Navigation
+- 🎯 **Zero Config**: Works out of the box, no core code modifications needed
 
 ---
 
-## 🐾 插件式机器人支持
+## 🐾 Plugin-Based Robot Support
 
 ```python
-# 就像导入Python库一样简单！
+# As simple as importing a Python library!
 from openclaw_robotics.robots import GO1, GO2, G1
 
-# 自动检测连接 - 无需指定型号
+# Auto-detect and connect - no model specification needed
 robot = GO1.auto_connect()
 
-# 或手动选择
+# Or manually select
 robot = GO2.connect()
 robot = G1.connect()
 
-# 控制
+# Control
 robot.forward(0.5)
 robot.rotate(45)
 robot.execute("wave")
 ```
 
-### ✅ 已支持型号
+### ✅ Supported Models
 
-| 型号 | 类型 | 导入语句 |
-|------|------|----------|
-| GO1 | 四足 | `from openclaw_robotics.robots import GO1` |
-| GO2 | 四足 | `from openclaw_robotics.robots import GO2` |
-| G1 | 人形 | `from openclaw_robotics.robots import G1` |
+| Model | Type | Import Statement |
+|-------|------|------------------|
+| GO1 | Quadruped | `from openclaw_robotics.robots import GO1` |
+| GO2 | Quadruped | `from openclaw_robotics.robots import GO2` |
+| G1 | Humanoid | `from openclaw_robotics.robots import G1` |
 
 ---
 
-## 📷 Insight9相机集成 (Q1-Q2)
+## 📷 Insight9 Camera Integration (Q1-Q2)
 
 ```python
 from openclaw_robotics.sensors import Insight9Pro
 
-# 一行代码启用SLAM
+# One line to enable SLAM
 camera = Insight9Pro.auto_connect()
 
-# 深度数据直接给SLAM使用
-slam = camera.enable_slam()  # 自动对接ORB-SLAM3
+# Depth data directly for SLAM
+slam = camera.enable_slam()  # Auto对接ORB-SLAM3
 ```
 
-### Insight9系列
+### Insight9 Series
 
-| 型号 | 分辨率 | 深度范围 | SLAM支持 |
-|------|--------|----------|----------|
+| Model | Resolution | Depth Range | SLAM Support |
+|-------|------------|-------------|--------------|
 | V1 | 720P | 0.2-3m | ✅ |
 | Pro | 1080P | 0.1-10m | ✅ |
 | Max | 1440P | 0.05-15m | ✅ |
@@ -71,77 +71,77 @@ slam = camera.enable_slam()  # 自动对接ORB-SLAM3
 ```python
 from openclaw_robotics.slam import SLAM
 
-# 自动检测Insight9并初始化SLAM
+# Auto-detect Insight9 and initialize SLAM
 slam = SLAM.auto_init(sensor="insight9_pro")
 
-# 获取位姿
+# Get pose
 pose = slam.get_pose()
 
-# 保存/加载地图
+# Save/load map
 slam.save_map("office_map.bin")
 slam.load_map("office_map.bin")
 ```
 
-### 支持的SLAM算法
+### Supported SLAM Algorithms
 
-- **ORB-SLAM3** - 特征点法，功能完整
-- **VINS-Fusion** - 视觉惯性，紧凑高效
+- **ORB-SLAM3** - Feature-based, full-featured
+- **VINS-Fusion** - Visual-inertial, compact & efficient
 
 ---
 
-## 🧭 TinyNav导航 (Q3-Q4)
+## 🧭 TinyNav Navigation (Q3-Q4)
 
 ```python
 from openclaw_robotics.navigation import Navigator
 
-# 创建导航器
+# Create navigator
 nav = Navigator(robot=robot, slam=slam)
 
-# 点对点导航
+# Point-to-point navigation
 nav.navigate(goal=(3.0, 2.0, 0.0))  # x, y, theta
 
-# 区域巡航
+# Area cruise
 nav.cruise(area="living_room")
 
-# 语义导航
+# Semantic navigation
 nav.semantic_navigate("go to kitchen")
 ```
 
-### 导航特性
+### Navigation Features
 
-- A*全局规划
-- DWA局部避障
-- 语义标签导航
-- 任务序列
+- A* Global Planning
+- DWA Local Obstacle Avoidance
+- Semantic Label Navigation
+- Task Sequences
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 安装
+### 1. Install
 ```bash
 git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
 cd OpenClaw-Robotics
 pip install -r requirements.txt
 ```
 
-### 2. 一行代码控制机器人
+### 2. Control Robot (One Line)
 ```python
 from openclaw_robotics.robots import auto_connect
 
-robot = auto_connect()  # 自动检测型号
+robot = auto_connect()  # Auto-detect model
 robot.forward(0.5)
 ```
 
-### 3. 启用SLAM (Q2)
+### 3. Enable SLAM (Q2)
 ```python
 from openclaw_robotics.slam import auto_init_slam
 
-slam = auto_init_slam()  # 自动检测Insight9
+slam = auto_init_slam()  # Auto-detect Insight9
 pose = slam.get_pose()
 ```
 
-### 4. 开始导航 (Q4)
+### 4. Start Navigation (Q4)
 ```python
 from openclaw_robotics.navigation import Navigator
 
@@ -151,89 +151,89 @@ nav.navigate(goal=(5.0, 3.0, 0))
 
 ---
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 OpenClaw-Robotics/
 ├── src/
-│   ├── core/                    # 核心框架
-│   │   └── plugin_system.py     # 插件系统
-│   ├── robots/                 # 机器人插件
-│   │   ├── __init__.py        # 自动导入
-│   │   ├── go1/               # GO1插件
-│   │   ├── go2/               # GO2插件
-│   │   └── g1/                # G1插件
-│   ├── sensors/                # 传感器插件
-│   │   └── insight9/          # Insight9系列
-│   ├── slam/                   # SLAM模块
+│   ├── core/                    # Core framework
+│   │   └── plugin_system.py     # Plugin system
+│   ├── robots/                 # Robot plugins
+│   │   ├── __init__.py        # Auto import
+│   │   ├── go1/               # GO1 plugin
+│   │   ├── go2/               # GO2 plugin
+│   │   └── g1/                # G1 plugin
+│   ├── sensors/                # Sensor plugins
+│   │   └── insight9/          # Insight9 series
+│   ├── slam/                   # SLAM module
 │   │   └── visual_slam.py     # Visual SLAM
-│   └── navigation/              # 导航模块
-│       └── tinynav/            # TinyNav
+│   └── navigation/              # Navigation module
+│       └── tinynav/           # TinyNav
 ├── plugins/
-│   ├── __init__.py           # 自动注册
-│   └── auto_import.py         # 智能导入
-├── configs/                    # 配置模板
-├── examples/                   # 使用示例
+│   ├── __init__.py           # Auto register
+│   └── auto_import.py        # Smart import
+├── configs/                    # Config templates
+├── examples/                   # Usage examples
 └── docs/
-    └── ROADMAP.md            # 2026路线图
+    └── ROADMAP.md            # 2026 roadmap
 ```
 
 ---
 
-## 📖 文档
+## 📖 Documentation
 
-- **[ROADMAP.md](docs/ROADMAP.md)** - 2026年详细路线图
-- **[examples/](examples/)** - 使用示例
-- **API Docs** - 待发布
+- **[ROADMAP.md](docs/ROADMAP.md)** - Detailed 2026 roadmap
+- **[examples/](examples/)** - Usage examples
+- **API Docs** - Coming soon
 
 ---
 
-## 🗓️ 2026年时间表
+## 🗓️ 2026 Timeline
 
 ### Q1-Q2: Visual SLAM
-- [x] 基础架构
-- [ ] ORB-SLAM3集成
-- [ ] Insight9 Pro/Max支持
-- [ ] 实时地图构建
+- [x] Base architecture
+- [ ] ORB-SLAM3 integration
+- [ ] Insight9 Pro/Max support
+- [ ] Real-time map building
 
-### Q3-Q4: TinyNav导航
-- [ ] A*路径规划
-- [ ] 避障算法
-- [ ] 语义导航
-- [ ] 完整导航系统
+### Q3-Q4: TinyNav Navigation
+- [ ] A* Path planning
+- [ ] Obstacle avoidance
+- [ ] Semantic navigation
+- [ ] Complete navigation system
 
 ---
 
-## 🤝 贡献指南
+## 🤝 Contributing Guide
 
-### 添加新机器人插件
+### Add New Robot Plugin
 ```python
 # plugins/robots/my_robot.py
 from openclaw_robotics.core import RobotPlugin
 
 class MyRobotDriver(RobotPlugin):
     PLUGIN_NAME = "my_robot"
-    # 实现 connect(), move() 等方法
+    # Implement connect(), move() methods
 ```
 
-### 添加新传感器插件
+### Add New Sensor Plugin
 ```python
 # plugins/sensors/my_sensor.py
 from openclaw_robotics.core import SensorPlugin
 
 class MySensorDriver(SensorPlugin):
     PLUGIN_NAME = "my_sensor"
-    # 实现 read(), calibrate() 等方法
+    # Implement read(), calibrate() methods
 ```
 
 ---
 
-## 📄 许可证
+## 📄 License
 
-MIT License - 详见 [LICENSE](LICENSE)
+MIT License - See [LICENSE](LICENSE)
 
 ---
 
-**让机器人控制变得简单** 🤖✨
+**Making robot control simple** 🤖✨
 
-*2026年目标：Visual SLAM + Insight9 + TinyNav*
+*2026 Goals: Visual SLAM + Insight9 + TinyNav*

@@ -1,91 +1,91 @@
-# OpenClaw-Robotics 2026 路线图
+# OpenClaw-Robotics 2026 Roadmap
 
-## 🎯 核心目标 (2026年内完成)
+## 🎯 Core Goals (Complete in 2026)
 
-### ✅ 当前已完成
-- 基础架构
-- GO1/GO2/G1 基础控制
-- WhatsApp集成
+### ✅ Completed
+- Base architecture
+- GO1/GO2/G1 basic control
+- WhatsApp integration
 
-### 🚀 Q1-Q2 (2026上半年) - Visual SLAM与地图
-**重点：Visual SLAM + Insight9深度集成**
+### 🚀 Q1-Q2 (H1 2026) - Visual SLAM & Mapping
+**Focus: Visual SLAM + Insight9 Deep Integration**
 
-- [ ] **Visual SLAM核心**
-  - [ ] ORB-SLAM3基础框架
-  - [ ] VINS-Fusion支持
-  - [ ] 实时地图构建
-  - [ ] 地图存储/加载
+- [ ] **Visual SLAM Core**
+  - [ ] ORB-SLAM3 base framework
+  - [ ] VINS-Fusion support
+  - [ ] Real-time map building
+  - [ ] Map save/load
 
-- [ ] **Insight9相机深度集成**
-  - [ ] Insight9-V1/Pro/Max驱动
-  - [ ] 深度数据流SLAM
-  - [ ] 多相机同步
-  - [ ] 边缘计算优化
+- [ ] **Insight9 Camera Deep Integration**
+  - [ ] Insight9-V1/Pro/Max drivers
+  - [ ] Depth data stream for SLAM
+  - [ ] Multi-camera sync
+  - [ ] Edge compute optimization
 
-### 🎯 Q3-Q4 (2026下半年) - TinyNav导航
-**重点：开源TinyNav导航集成 + 自主导航**
+### 🎯 Q3-Q4 (H2 2026) - TinyNav Navigation
+**Focus: Open-source TinyNav Navigation Integration + Autonomous Navigation**
 
-- [ ] **TinyNav导航集成**
-  - [ ] A*路径规划
-  - [ ] RRT实时规划
-  - [ ] DWA/TEB避障
-  - [ ] 语义导航
+- [ ] **TinyNav Integration**
+  - [ ] A* Path planning
+  - [ ] RRT real-time planning
+  - [ ] DWA/TEB Obstacle avoidance
+  - [ ] Semantic navigation
 
-- [ ] **自主导航任务**
-  - [ ] 点对点导航
-  - [ ] 区域巡航
-  - [ ] 多目标任务序列
+- [ ] **Autonomous Navigation Tasks**
+  - [ ] Point-to-point navigation
+  - [ ] Area cruise
+  - [ ] Multi-target task sequences
 
 ---
 
-## 🤖 支持设备矩阵
+## 🤖 Supported Device Matrix
 
-### 🐾 宇树机器人 (插件式)
+### 🐾 Unitree Robots (Plugin-Based)
 
-| 型号 | 类型 | 状态 | 插件导入 |
-|------|------|------|----------|
-| GO1 | 四足 | ✅ | `from plugins.robots.go1 import GO1Driver` |
-| GO2 | 四足 | ✅ | `from plugins.robots.go2 import GO2Driver` |
-| G1 | 人形 | ✅ | `from plugins.robots.g1 import G1Driver` |
+| Model | Type | Status | Plugin Import |
+|-------|------|--------|---------------|
+| GO1 | Quadruped | ✅ | `from plugins.robots.go1 import GO1Driver` |
+| GO2 | Quadruped | ✅ | `from plugins.robots.go2 import GO2Driver` |
+| G1 | Humanoid | ✅ | `from plugins.robots.g1 import G1Driver` |
 
-**用户无需修改核心代码，只需导入对应插件即可**
+**Users don't need to modify core code, just import the corresponding plugin**
 
-### 📷 Insight9传感器 (即插即用)
+### 📷 Insight9 Sensors (Plug & Play)
 
-| 型号 | 类型 | 状态 | 使用方式 |
-|------|------|------|----------|
+| Model | Type | Status | Usage |
+|-------|------|--------|-------|
 | Insight9-V1 | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9V1` |
 | Insight9-Pro | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9Pro` |
 | Insight9-Max | RGB-D | ✅ | `from plugins.sensors.insight9 import Insight9Max` |
 
 ---
 
-## 🗺️ 架构设计
+## 🗺️ Architecture Design
 
-### 插件系统
+### Plugin System
 ```python
-# 用户只需导入即可自动使用
+# Users just import, auto-use
 from openclaw_robotics import Robot
 
-# 自动检测并连接
-robot = Robot.auto_connect()  # 无需指定型号
+# Auto-detect and connect - no model specification needed
+robot = Robot.auto_connect()
 
-# 或手动指定
-robot = Robot.use_plugin("go2")  # 使用GO2插件
+# Or manually specify
+robot = Robot.use_plugin("go2")  # Use GO2 plugin
 ```
 
 ### Visual SLAM
 ```python
 from openclaw_robotics.slam import SLAM
 
-# 自动初始化
+# Auto-initialize
 slam = SLAM.auto_init(sensor="insight9_pro")
 
-# 获取位姿
+# Get pose
 pose = slam.get_pose()
 ```
 
-### TinyNav导航
+### TinyNav Navigation
 ```python
 from openclaw_robotics.navigation import Navigator
 
@@ -95,108 +95,108 @@ nav.navigate(goal=(2.0, 1.5, 0.0))  # x, y, theta
 
 ---
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 OpenClaw-Robotics/
 ├── src/
-│   ├── core/                    # 核心框架
-│   │   └── plugin_system.py      # 插件系统
-│   ├── robots/                   # 机器人插件
-│   │   ├── go1/                 # GO1插件
-│   │   ├── go2/                 # GO2插件
-│   │   └── g1/                  # G1插件
-│   ├── sensors/                  # 传感器插件
-│   │   └── insight9/            # Insight9系列
-│   ├── slam/                     # SLAM模块
+│   ├── core/                    # Core framework
+│   │   └── plugin_system.py      # Plugin system
+│   ├── robots/                   # Robot plugins
+│   │   ├── go1/                 # GO1 plugin
+│   │   ├── go2/                 # GO2 plugin
+│   │   └── g1/                  # G1 plugin
+│   ├── sensors/                  # Sensor plugins
+│   │   └── insight9/            # Insight9 series
+│   ├── slam/                     # SLAM module
 │   │   └── visual_slam.py       # Visual SLAM
-│   └── navigation/               # 导航模块 (Q3)
-│       └── tinynav/              # TinyNav集成
-├── plugins/                       # 插件入口
-│   ├── __init__.py              # 自动注册所有插件
-│   └── auto_import.py           # 自动导入工具
-├── configs/                      # 配置模板
-├── examples/                      # 使用示例
+│   └── navigation/               # Navigation module (Q3)
+│       └── tinynav/             # TinyNav integration
+├── plugins/                       # Plugin entry
+│   ├── __init__.py              # Auto register all plugins
+│   └── auto_import.py           # Auto import utility
+├── configs/                      # Config templates
+├── examples/                      # Usage examples
 └── README.md
 ```
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 安装
+### 1. Install
 ```bash
 git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
 cd OpenClaw-Robotics
 pip install -r requirements.txt
 ```
 
-### 2. 使用机器人 (无需配置)
+### 2. Use Robot (No Config)
 ```python
 from openclaw_robotics import Robot
 
-# 自动检测并连接
+# Auto-detect and connect
 robot = Robot.auto_connect()
 
-# 控制机器人
+# Control robot
 robot.forward(0.5)
 robot.rotate(45)
 robot.execute("wave")
 ```
 
-### 3. 使用SLAM (Q1-Q2)
+### 3. Use SLAM (Q1-Q2)
 ```python
 from openclaw_robotics.slam import SLAM
 
-# 自动初始化Insight9 + SLAM
+# Auto-initialize Insight9 + SLAM
 slam = SLAM.auto_init(sensor="insight9_pro")
 
-# 获取位姿
+# Get pose
 pose = slam.get_pose()
 
-# 保存地图
+# Save map
 slam.save_map("my_map.bin")
 ```
 
-### 4. 使用导航 (Q3-Q4)
+### 4. Use Navigation (Q3-Q4)
 ```python
 from openclaw_robotics.navigation import Navigator
 
 nav = Navigator(robot, slam)
-nav.navigate(goal=(3.0, 2.0, 0.0))  # 自动路径规划和避障
+nav.navigate(goal=(3.0, 2.0, 0.0))  # Auto path planning & obstacle avoidance
 ```
 
 ---
 
-## 📊 开发时间表
+## 📊 Development Timeline
 
-### Q1 2026 (1-3月)
-- [x] 基础架构
-- [x] 插件系统设计
-- [ ] **1月**: Visual SLAM接口标准化
-- [ ] **2月**: Insight9 Pro驱动
-- [ ] **3月**: ORB-SLAM3基础集成
+### Q1 2026 (Jan-Mar)
+- [x] Base architecture
+- [x] Plugin system design
+- [ ] **Jan**: Visual SLAM interface standardization
+- [ ] **Feb**: Insight9 Pro driver
+- [ ] **Mar**: ORB-SLAM3 base integration
 
-### Q2 2026 (4-6月)
-- [ ] **4月**: VINS-Fusion支持
-- [ ] **5月**: Insight9全系列支持
-- [ ] **6月**: SLAM地图功能
+### Q2 2026 (Apr-Jun)
+- [ ] **Apr**: VINS-Fusion support
+- [ ] **May**: Insight9 full series support
+- [ ] **Jun**: SLAM map functionality
 
-### Q3 2026 (7-9月)
-- [ ] **7月**: TinyNav Basic
-- [ ] **8月**: A* + RRT路径规划
-- [ ] **9月**: 避障算法集成
+### Q3 2026 (Jul-Sep)
+- [ ] **Jul**: TinyNav Basic
+- [ ] **Aug**: A* + RRT path planning
+- [ ] **Sep**: Obstacle avoidance algorithm integration
 
-### Q4 2026 (10-12月)
-- [ ] **10月**: 语义导航
-- [ ] **11月**: 性能优化
-- [ ] **12月**: 完整版v2.0发布
+### Q4 2026 (Oct-Dec)
+- [ ] **Oct**: Semantic navigation
+- [ ] **Nov**: Performance optimization
+- [ ] **Dec**: Complete v2.0 release
 
 ---
 
-## 🔌 插件开发指南
+## 🔌 Plugin Development Guide
 
-### 创建新机器人插件
+### Create New Robot Plugin
 ```python
 # plugins/robots/my_robot.py
 from openclaw_robotics.core import RobotPlugin
@@ -206,17 +206,17 @@ class MyRobotDriver(RobotPlugin):
     PLUGIN_VERSION = "1.0.0"
     
     def connect(self) -> bool:
-        # 你的连接代码
+        # Your connection code
         return True
     
     def move(self, cmd) -> bool:
-        # 你的移动代码
+        # Your movement code
         return True
 
-# 自动注册 - 无需额外代码
+# Auto-register - no extra code needed
 ```
 
-### 创建新传感器插件
+### Create New Sensor Plugin
 ```python
 # plugins/sensors/my_sensor.py
 from openclaw_robotics.core import SensorPlugin
@@ -225,18 +225,18 @@ class MySensorDriver(SensorPlugin):
     PLUGIN_NAME = "my_sensor"
     
     def read(self) -> Dict:
-        # 读取传感器数据
+        # Read sensor data
         return {"data": 0}
 ```
 
 ---
 
-## 📞 联系
+## 📞 Contact
 
 - **GitHub**: https://github.com/LooperRobotics/OpenClaw-Robotics
 - **Issues**: GitHub Issues
 
 ---
 
-*最后更新: 2026年2月15日*
-*版本: v1.1.0*
+*Last Updated: February 15, 2026*
+*Version: v1.1.0*
