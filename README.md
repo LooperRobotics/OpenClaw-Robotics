@@ -5,116 +5,324 @@
   <a href="https://github.com/LooperRobotics/OpenClaw-Robotics/fork">
     <img src="https://img.shields.io/github/forks/LooperRobotics/OpenClaw-Robotics?style=social" alt="Forks">
   </a>
-  <a href="https://github.com/LooperRobotics/OpenClaw-Robotics/releases">
-    <img src="https://img.shields.io/github/v/release/LooperRobotics/OpenClaw-Robotics?include_prereleases&style=social" alt="Version">
-  </a>
   <img src="https://img.shields.io/github/license/LooperRobotics/OpenClaw-Robotics?style=social" alt="License">
+  <img src="https://img.shields.io/pypi/v/openclaw-robotics?style=social" alt="PyPI">
 </p>
 
-<!-- SEO: Description for search engines and social media -->
-<meta name="description" content="OpenClaw Robotics Skill - Control robots via instant messaging. Supports WeChat (企业微信), Feishu (飞书), DingTalk (钉钉), WhatsApp. For Unitree GO1/GO2/G1/H1 robots.">
-<meta name="keywords" content="robot control, instant messaging, wechat robot, whatsapp robot, unitree robot, quadruped robot, bipedal robot, embodied AI, visual SLAM, python robotics, openclaw">
+<!-- SEO Meta Tags -->
+<meta name="description" content="OpenClaw Robotics Skill - Control robots via instant messaging. Supports all robot types: quadrupeds, bipedals, wheeled, drones. Connect AI to the physical world.">
+<meta name="keywords" content="robotics, robot control, instant messaging, openclaw, embodied AI, quadruped robot, bipedal robot, humanoid robot, wheeled robot, drone, computer vision, visual SLAM, navigation, python, ROS">
 
-<!-- Open Graph / Social Media -->
-<meta property="og:title" content="OpenClaw Robotics - Control Robots via Instant Messaging">
-<meta property="og:description" content="Open source skill for controlling robots through IM platforms. Supports WeChat, Feishu, DingTalk, WhatsApp. For Unitree and other robots.">
+<meta property="og:title" content="OpenClaw Robotics - Connect AI to the Physical World">
+<meta property="og:description" content="Control robots via messaging apps. The most easy-to-use OpenClaw skill for connecting AI to physical robots.">
 <meta property="og:url" content="https://github.com/LooperRobotics/OpenClaw-Robotics">
 <meta property="og:type" content="project">
 
-# 🤖 OpenClaw Robotics Skill
-
-[English](#english) | [中文](#中文)
+<h1 align="center">🤖 OpenClaw Robotics Skill</h1>
 
 ---
 
-## English
+## Our Vision
 
-<p align="center">
-  <strong>Control mobile robots via instant messaging platforms</strong>
-</p>
+**We believe robots should be as easy to control as sending a text message.**
 
-### ⭐ Key Features
+This skill bridges the gap between AI (OpenClaw) and the physical world. Whether you're a researcher, educator, hobbyist, or enterprise - you can now control robots through platforms you already use every day.
 
-- **Multi-IM Support**: WeCom, Feishu, DingTalk, WhatsApp
-- **Robot Types**: Quadruped (GO1, GO2), Bipedal/Humanoid (G1, H1)
-- **Natural Language**: Control robots with text commands
-- **VSLAM Ready**: Support for Insight9 RGB-D camera
-- **Navigation**: TinyNav integration (coming soon)
+```
+You (WhatsApp/WeChat/DingTalk) 
+        │
+        ▼
+   ┌──────────┐
+   │ OpenClaw │ ← AI Brain
+   └────┬─────┘
+        │
+        ▼
+   ┌──────────┐
+   │  Robot   │ ← Physical World
+   └──────────┘
+```
 
-### 📦 Installation
+---
+
+## 🎯 What We Do
+
+| Goal | How We Achieve It |
+|------|-------------------|
+| **Universal Control** | One skill controls ANY robot type |
+| **Zero Learning Curve** | Use natural language, no coding required |
+| **Instant Deployment** | Install via ClawHub in one command |
+| **Future-Proof** | Plugin architecture for new robots |
+
+---
+
+## ✅ What's Working Now
+
+### Supported Robot Types
+
+| Type | Robots | Use Case |
+|------|--------|----------|
+| **Quadruped** | Unitree GO1, GO2 | Inspection, exploration |
+| **Bipedal/Humanoid** | Unitree G1, H1 | Service, manipulation |
+
+### Supported IM Platforms
+
+| Platform | Code | Region |
+|----------|------|--------|
+| WeCom | `wecom` | China |
+| Feishu | `feishu` | China |
+| DingTalk | `dingtalk` | China |
+| WhatsApp | `whatsapp` | Global |
+
+### Commands Work Right Now
+
+```
+forward 1m        → Robot walks forward 1 meter
+turn left 45      → Robot turns left 45 degrees
+stand             → Robot stands up
+sit               → Robot sits down
+wave              → Robot waves hand
+go to 5,3         → Robot navigates to position
+```
+
+---
+
+## 🔜 What's Coming
+
+We're building the most comprehensive robot control skill:
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| **Insight9 Camera** | 🔜 | Looper AI Stereo Camera for VSLAM |
+| **TinyNav** | 🔜 | Open-source navigation library |
+| **Wheeled Robots** | 🔜 | Indoor/outdoor platforms |
+| **Aerial Robots** | 🔜 | Drones and UAVs |
+| **Surface Vehicles** | 🔜 | Boats, rovers |
+| **Multi-Robot** | 🔜 | Coordinate multiple robots |
+
+---
+
+## 🚀 Quick Start
+
+### Install (One Command)
 
 ```bash
 npx skills add LooperRobotics/OpenClaw-Robotics
 ```
 
-### 💬 Quick Start
+### Or Manual Install
+
+```bash
+git clone https://github.com/LooperRobotics/OpenClaw-Robotics.git
+cp -r OpenClaw-Robotics ~/.openclaw/skills/unitree-robot
+```
+
+### Use It
 
 ```python
 from unitree_robot_skill import initialize, execute
 
-# Connect robot to IM
-initialize(robot="unitree_go2", im="wecom")
+# Connect robot to your messaging app
+initialize(
+    robot="unitree_go2",
+    robot_ip="192.168.12.1",
+    im="wecom"
+)
 
-# Control via messaging
+# That's it! Now control via WhatsApp/WeChat/etc.
+
 execute("forward 1m")
-execute("turn left 45")
+execute("turn left 90")
+execute("wave")
+
+# Check status anytime
+status = get_status()
+print(status)
+# {'robot': 'Unitree GO2', 'battery': '85%', 'temperature': '35°C'}
 ```
-
-### 🔗 Links
-
-- **GitHub**: https://github.com/LooperRobotics/OpenClaw-Robotics
-- **Documentation**: See README.md for full guide
-
-### 📊 Topics (for discovery)
-
-robotics robot-control instant-messaging wechat whatsapp telegram dingtalk feishu unitree quadruped bipedal humanoid embodied-ai visual-slam python openclaw
 
 ---
 
-## 中文
+## 📖 Command Reference
 
-<p align="center">
-  <strong>通过即时通讯平台控制移动机器人</strong>
-</p>
+### Movement
 
-### ⭐ 核心功能
+| Command | Example | Description |
+|---------|---------|-------------|
+| `forward Xm` | `forward 2m` | Move forward X meters |
+| `backward Xm` | `backward 0.5m` | Move backward X meters |
+| `turn left X` | `turn left 45` | Turn left X degrees |
+| `turn right X` | `turn right 90` | Turn right X degrees |
 
-- **多IM平台**: 企业微信、飞书、钉钉、WhatsApp
-- **多机器人类型**: 四足(GO1/GO2)、双足/人形(G1/H1)
-- **自然语言控制**: 文本命令控制机器人
-- **视觉SLAM**: 支持 Insight9 RGB-D 相机
-- **导航**: TinyNav 集成（规划中）
+### Posture
 
-### 📦 安装
+| Command | Description |
+|---------|-------------|
+| `stand` | Stand up |
+| `sit` | Sit down |
+| `lie down` | Lie down |
 
-```bash
-npx skills add LooperRobotics/OpenClaw-Robotics
+### Actions
+
+| Command | Description |
+|---------|-------------|
+| `wave` | Wave hand |
+| `handshake` | Offer handshake |
+| `dance` | Dance |
+
+### Info
+
+| Command | Description |
+|---------|-------------|
+| `status` | Get robot status |
+| `battery` | Get battery level |
+| `position` | Get current position |
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│                 IM Platforms                        │
+│   WhatsApp  │  WeCom  │  Feishu  │  DingTalk    │
+└─────────────────────┬───────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│              Natural Language Parser                │
+│    "forward 1m then turn left" → [actions]        │
+└─────────────────────┬───────────────────────────────┘
+                      │
+         ┌────────────┼────────────┐
+         ▼            ▼            ▼
+┌─────────────┐ ┌──────────┐ ┌──────────┐
+│  Quadruped  │ │ Bipedal  │ │ Wheeled  │
+│   (GO1/2)   │ │  (G1/H1) │ │  (future)│
+└─────────────┘ └──────────┘ └──────────┘
+         │            │            │
+         └────────────┼────────────┘
+                      ▼
+              ┌─────────────┐
+              │   Robots   │
+              └─────────────┘
 ```
 
-### 💬 快速开始
+---
+
+## 🔧 Add Your Own Robot
+
+We designed this to be extensible. Adding a new robot takes minutes:
 
 ```python
-from unitree_robot_skill import initialize, execute
+from robot_adapters.base import RobotAdapter, RobotType
 
-# 连接机器人和IM
-initialize(robot="unitree_go2", im="wecom")
+class MyRobotAdapter(RobotAdapter):
+    ROBOT_CODE = "mydrobot_x1"
+    ROBOT_NAME = "My Robot X1"
+    BRAND = "MyBrand"
+    ROBOT_TYPE = RobotType.QUADRUPED
+    
+    def connect(self) -> bool:
+        # Your SDK connection code
+        return True
+    
+    def move(self, x: float, y: float, yaw: float):
+        # Your movement code
+        return TaskResult(True, "Moved")
+    
+    # ... implement other methods
 
-# 通过消息控制
-execute("往前走1米")
-execute("左转45度")
+# Register it
+from robot_adapters.factory import RobotFactory
+RobotFactory.register("mydrobot_x1")(MyRobotAdapter)
 ```
 
-### 📋 相关搜索词
+That's it! Now control it via:
+```
+execute("mydrobot_x1", "forward 1m")
+```
 
-- 微信控制机器人
-- 钉钉 机器人控制
-- Python 机器人控制
-- 四足机器人 开发
-- 人形机器人 SDK
-- 即时通讯 机器人
+---
+
+## 📊 Roadmap
+
+```
+2026 Q1 ───────────────────────────────────▶
+│
+├─ Insight9 Camera Support
+│  └─ VSLAM with RGB-Depth
+│
+├─ Basic Navigation  
+│  └─ Point-to-point path planning
+│
+└─ Wheeled Robot Framework
+   └─ First wheeled adapter
+
+2026 Q2 ───────────────────────────────────▶
+│
+├─ TinyNav Integration
+│  └─ A* + DWA obstacle avoidance
+│
+├─ Multi-Robot Coordination
+│  └─ Fleet management
+│
+└─ Aerial Robot Framework
+   └─ Drone adapter
+
+2026 Q3+ ──────────────────────────────────▶
+│
+├─ Surface Vehicles
+├─ Advanced SLAM
+└─ Your suggestions!
+```
+
+---
+
+## 🤝 Want to Contribute?
+
+We welcome contributors! Here's how:
+
+1. **Star us** ⭐ - Helps discoverability
+2. **Fork** - Make your own version  
+3. **PR** - Submit improvements
+4. **Issue** - Report bugs or request features
+5. **Share** - Tell others about us!
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+---
+
+## 📚 Resources
+
+- [Documentation](docs/) - Detailed guides
+- [Examples](examples/) - Usage examples
+- [ROADMAP.md](docs/ROADMAP.md) - Long-term plans
+
+---
+
+## 📝 Citation
+
+```bibtex
+@software{OpenClaw-Robotics,
+  author = {LooperRobotics},
+  title = {OpenClaw Robotics Skill - Control Robots via Messaging},
+  year = {2025},
+  url = {https://github.com/LooperRobotics/OpenClaw-Robotics},
+  license = {MIT}
+}
+```
+
+---
+
+## ⭐ Let's Connect
+
+- **GitHub**: https://github.com/LooperRobotics
+- **Website**: https://looper.tech (coming soon)
+- **Email**: looper@looper.tech
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by LooperRobotics | License: MIT</sub>
+  <strong>Built with ❤️ by <a href="https://github.com/LooperRobotics">LooperRobotics</a></strong><br>
+  <sub>Making robots accessible to everyone, one message at a time.</sub>
 </p>
