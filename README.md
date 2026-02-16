@@ -92,8 +92,8 @@ We're building the most comprehensive robot control skill:
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| **Insight9 Camera** | 🔜 | Looper AI Stereo Camera for VSLAM |
-| **TinyNav** | 🔜 | Open-source navigation library |
+| **Insight9 Camera** | 🔜 | Looper AI Stereo Camera for VSLAM [website](www.looper-robotics.com) |
+| **TinyNav** | 🔜 | Open-source navigation library [repo](https://github.com/UniflexAI/tinynav.git)|
 | **Wheeled Robots** | 🔜 | Indoor/outdoor platforms |
 | **Aerial Robots** | 🔜 | Drones and UAVs |
 | **Surface Vehicles** | 🔜 | Boats, rovers |
