@@ -1,6 +1,6 @@
 """Unitree Robot Controller Skill for OpenClaw
 
-Control robots via OpenClaw with natural language commands.
+Control robots via OpenClaw with natural language commands from IM.
 """
 
 import re
@@ -19,7 +19,7 @@ class RoboticsSkill:
         self.navigator: Optional[Navigator] = None
         
     def initialize(self, robot: str = "unitree_go2", 
-                   robot_ip: str = "192.168.12.1") -> dict:
+                   robot_ip: str = "192.168.12.1", config: dict = None) -> dict:
         """Initialize robot connection"""
         # Create robot
         self.robot = RobotFactory.create(robot, robot_ip)

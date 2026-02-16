@@ -64,6 +64,15 @@ You (WhatsApp/WeChat/DingTalk)
 | **Quadruped** | Unitree GO1, GO2 | Inspection, exploration |
 | **Bipedal/Humanoid** | Unitree G1, H1 | Service, manipulation |
 
+### Supported IM Platforms
+
+| Platform | Code | Region |
+|----------|------|--------|
+| WhatsApp | `whatsapp` | Global |
+| Lark/Feishu | `feishu` | Global/China |
+| WeCom | `wecom` | China |
+| DingTalk | `dingtalk` | China |
+
 ### Commands Work Right Now
 
 ```
@@ -128,7 +137,7 @@ execute("wave")
 # Check status anytime
 status = get_status()
 print(status)
-# {'robot': 'Unitree GO2', 'battery': '85%', 'temperature': '35°C', 'position': [1.0, 0.0, 0.0]}
+# {'robot': 'Unitree GO2', 'battery': '85%', 'temperature': '35°C'}
 ```
 
 ---
@@ -225,7 +234,7 @@ class MyRobotAdapter(RobotAdapter):
     
     def move(self, x: float, y: float, yaw: float):
         # Your movement code
-        return TaskResult(True, "Moved", data={"position": [x, y, 0]})
+        return TaskResult(True, "Moved")
     
     # ... implement other methods
 
@@ -321,5 +330,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 <p align="center">
   <strong>Built with ❤️ by <a href="https://github.com/LooperRobotics">LooperRobotics</a></strong><br>
-  <sub>Making robots accessible to everyone.</sub>
+  <sub>Making robots accessible to everyone, one message at a time.</sub>
 </p>

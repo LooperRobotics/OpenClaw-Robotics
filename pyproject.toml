@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "openclaw-robotics"
 version = "2.1.0"
-description = "Control mobile robots via OpenClaw"
+description = "Control mobile robots with instant messaging though OpenClaw"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
