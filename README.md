@@ -10,8 +10,8 @@
 </p>
 
 <!-- SEO Meta Tags -->
-<meta name="description" content="OpenClaw Robotics Skill - Control robots via messaging. Supports all robot types: quadrupeds, bipedals, wheeled, drones. Connect AI to the physical world.">
-<meta name="keywords" content="robotics, robot control, openclaw, instant messaging, embodied AI, quadruped robot, bipedal robot, humanoid robot, wheeled robot, drone, computer vision, visual SLAM, navigation, python, ROS">
+<meta name="description" content="OpenClaw Robotics Skill - Control robots via instant messaging. Supports all robot types: quadrupeds, bipedals, wheeled, drones. Connect AI to the physical world.">
+<meta name="keywords" content="robotics, robot control, instant messaging, openclaw, embodied AI, quadruped robot, bipedal robot, humanoid robot, wheeled robot, drone, computer vision, visual SLAM, navigation, python, ROS">
 
 <meta property="og:title" content="OpenClaw Robotics - Connect AI to the Physical World">
 <meta property="og:description" content="Control robots via messaging apps. The most easy-to-use OpenClaw skill for connecting AI to physical robots.">
@@ -65,7 +65,7 @@ You (WhatsApp/WeChat/DingTalk)
 | **Bipedal/Humanoid** | Unitree G1, H1 | Service, manipulation |
 
 ### Supported IM Platforms
-
+Any openclaw supported IM chat apps, e.g.
 | Platform | Code | Region |
 |----------|------|--------|
 | WhatsApp | `whatsapp` | Global |

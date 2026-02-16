@@ -12,7 +12,7 @@ authors = [
     {name = "LooperRobotics", email = "looper@looper.tech"}
 ]
 keywords = [
-    "robotics", "robot-control", "openclaw", 
+    "robotics", "robot-control", "openclaw", "instant-messaging",
     "unitree", "quadruped", "bipedal", "humanoid",
     "embodied-ai", "visual-slam", "navigation", "python"
 ]
