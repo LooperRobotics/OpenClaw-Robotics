@@ -1,6 +1,6 @@
 ---
 name: unitree-robot
-description: "Control mobile robots (quadruped, bipedal, wheeled, aerial) via IM platforms. Supports Unitree robots and Insight9 AI stereo camera."
+description: "Control mobile robots (quadruped, bipedal, wheeled, aerial) via OpenClaw. Supports Unitree robots and Insight9 AI stereo camera."
 metadata: {
   "openclaw": {
     "emoji": "🤖",
@@ -14,7 +14,7 @@ metadata: {
 
 # Unitree Robot Controller Skill
 
-Control various mobile robots through instant messaging platforms.
+Control various mobile robots through OpenClaw.
 
 ## Supported Robots
 
@@ -48,7 +48,7 @@ Control various mobile robots through instant messaging platforms.
 ```python
 from unitree_robot_skill import initialize, execute
 
-initialize(robot="unitree_go2", im="wecom")
+initialize(robot="unitree_go2")
 execute("forward 1m")
 execute("turn left 45")
 ```

@@ -1,15 +1,13 @@
-"""
-Unitree Robot Controller Skill for OpenClaw
+"""Unitree Robot Controller Skill for OpenClaw
 
-Control robots via IM (WeCom, Feishu, DingTalk, WhatsApp)
+Control robots via OpenClaw with natural language commands from IM.
 """
 
 import re
-from typing import Optional, Callable
-from .robot_adapters import RobotFactory, RobotAdapter
-from .im_adapters import WeComAdapter, FeishuAdapter, DingTalkAdapter, WhatsAppAdapter
-from .sensor_adapters import Insight9Adapter
-from .slam import VisualSLAM, Navigator
+from typing import Optional, Tuple
+from robot_adapters import RobotFactory, RobotAdapter
+from sensor_adapters import Insight9Adapter
+from slam import VisualSLAM, Navigator
 
 
 class RoboticsSkill:
@@ -17,35 +15,20 @@ class RoboticsSkill:
     
     def __init__(self):
         self.robot: Optional[RobotAdapter] = None
-        self.im_adapter = None
         self.slam: Optional[VisualSLAM] = None
         self.navigator: Optional[Navigator] = None
         
-    def initialize(self, robot: str = "unitree_go2", im: str = "wecom", 
+    def initialize(self, robot: str = "unitree_go2", 
                    robot_ip: str = "192.168.12.1", config: dict = None) -> dict:
-        """Initialize robot and IM connection"""
+        """Initialize robot connection"""
         # Create robot
         self.robot = RobotFactory.create(robot, robot_ip)
         if not self.robot or not self.robot.connect():
             return {"success": False, "error": "Failed to connect robot"}
         
-        # Create IM adapter
-        if im == "wecom":
-            self.im_adapter = WeComAdapter(config)
-        elif im == "feishu":
-            self.im_adapter = FeishuAdapter(config)
-        elif im == "dingtalk":
-            self.im_adapter = DingTalkAdapter(config)
-        elif im == "whatsapp":
-            self.im_adapter = WhatsAppAdapter(config)
-        
-        if self.im_adapter:
-            self.im_adapter.connect()
-        
         return {
             "success": True,
             "robot": self.robot.ROBOT_NAME,
-            "im": im,
             "connected": True
         }
     
@@ -92,7 +75,9 @@ class RoboticsSkill:
     def _execute_action(self, action: str, params: dict) -> dict:
         """Execute action on robot"""
         try:
-            from .robot_adapters.base import TaskResult
+            from robot_adapters.base import TaskResult
+            
+            result = None
             
             if action == "forward":
                 d = params.get("distance", 1.0)
@@ -134,7 +119,11 @@ class RoboticsSkill:
             else:
                 result = TaskResult(False, f"Not implemented: {action}")
             
-            return {"success": result.success, "message": result.message}
+            return {
+                "success": result.success, 
+                "message": result.message,
+                "data": result.data
+            }
             
         except Exception as e:
             return {"success": False, "error": str(e)}

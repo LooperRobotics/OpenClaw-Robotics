@@ -1,5 +1,7 @@
 """Navigation Module"""
 
+from typing import List, Tuple
+
 class Navigator:
     """Navigation using SLAM map"""
     

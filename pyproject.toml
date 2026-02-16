@@ -5,16 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "openclaw-robotics"
 version = "2.1.0"
-description = "Control mobile robots via instant messaging platforms (WeCom, Feishu, DingTalk, WhatsApp)"
+description = "Control mobile robots with instant messaging though OpenClaw"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "LooperRobotics", email = "looper@looper.tech"}
 ]
 keywords = [
-    "robotics", "robot-control", "instant-messaging", "wecom", "feishu", 
-    "dingtalk", "whatsapp", "unitree", "quadruped", "bipedal", "humanoid",
-    "embodied-ai", "visual-slam", "navigation", "openclaw", "python"
+    "robotics", "robot-control", "openclaw", "instant-messaging",
+    "unitree", "quadruped", "bipedal", "humanoid",
+    "embodied-ai", "visual-slam", "navigation", "python"
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -43,4 +43,4 @@ Issues = "https://github.com/LooperRobotics/OpenClaw-Robotics/issues"
 dev = ["pytest", "black", "mypy"]
 
 [tool.setuptools]
-packages = ["im_adapters", "robot_adapters", "sensor_adapters", "slam"]
+packages = ["robot_adapters", "sensor_adapters", "slam"]

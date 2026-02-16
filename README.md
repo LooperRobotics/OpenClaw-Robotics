@@ -65,13 +65,13 @@ You (WhatsApp/WeChat/DingTalk)
 | **Bipedal/Humanoid** | Unitree G1, H1 | Service, manipulation |
 
 ### Supported IM Platforms
-
+Any openclaw supported IM chat apps, e.g.
 | Platform | Code | Region |
 |----------|------|--------|
-| WeCom | `wecom` | China |
-| Feishu | `feishu` | China |
-| DingTalk | `dingtalk` | China |
 | WhatsApp | `whatsapp` | Global |
+| Lark/Feishu | `feishu` | Global/China |
+| WeCom | `wecom` | China |
+| DingTalk | `dingtalk` | China |
 
 ### Commands Work Right Now
 
@@ -121,15 +121,15 @@ cp -r OpenClaw-Robotics ~/.openclaw/skills/unitree-robot
 ```python
 from unitree_robot_skill import initialize, execute
 
-# Connect robot to your messaging app
+# Connect robot to your OpenClaw agent
 initialize(
     robot="unitree_go2",
-    robot_ip="192.168.12.1",
-    im="wecom"
+    robot_ip="192.168.12.1"
 )
 
-# That's it! Now control via WhatsApp/WeChat/etc.
-
+# That's it! Now control via OpenClaw
+# The OpenClaw main agent receives commands from IM (WeChat, WhatsApp, etc.)
+# and forwards them to this skill.
 execute("forward 1m")
 execute("turn left 90")
 execute("wave")
@@ -185,6 +185,12 @@ print(status)
 ┌─────────────────────────────────────────────────────┐
 │                 IM Platforms                        │
 │   WhatsApp  │  WeCom  │  Feishu  │  DingTalk    │
+└─────────────────────┬───────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│                 OpenClaw Agent                      │
+│        (LLM Logic & Decision Making)                │
 └─────────────────────┬───────────────────────────────┘
                       │
                       ▼
@@ -305,7 +311,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 ```bibtex
 @software{OpenClaw-Robotics,
   author = {LooperRobotics},
-  title = {OpenClaw Robotics Skill - Control Robots via Messaging},
+  title = {OpenClaw Robotics Skill - Control Robots via OpenClaw},
   year = {2025},
   url = {https://github.com/LooperRobotics/OpenClaw-Robotics},
   license = {MIT}
