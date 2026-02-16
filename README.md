@@ -10,8 +10,8 @@
 </p>
 
 <!-- SEO Meta Tags -->
-<meta name="description" content="OpenClaw Robotics Skill - Control robots via instant messaging. Supports all robot types: quadrupeds, bipedals, wheeled, drones. Connect AI to the physical world.">
-<meta name="keywords" content="robotics, robot control, instant messaging, openclaw, embodied AI, quadruped robot, bipedal robot, humanoid robot, wheeled robot, drone, computer vision, visual SLAM, navigation, python, ROS">
+<meta name="description" content="OpenClaw Robotics Skill - Control robots via messaging. Supports all robot types: quadrupeds, bipedals, wheeled, drones. Connect AI to the physical world.">
+<meta name="keywords" content="robotics, robot control, openclaw, instant messaging, embodied AI, quadruped robot, bipedal robot, humanoid robot, wheeled robot, drone, computer vision, visual SLAM, navigation, python, ROS">
 
 <meta property="og:title" content="OpenClaw Robotics - Connect AI to the Physical World">
 <meta property="og:description" content="Control robots via messaging apps. The most easy-to-use OpenClaw skill for connecting AI to physical robots.">
@@ -64,15 +64,6 @@ You (WhatsApp/WeChat/DingTalk)
 | **Quadruped** | Unitree GO1, GO2 | Inspection, exploration |
 | **Bipedal/Humanoid** | Unitree G1, H1 | Service, manipulation |
 
-### Supported IM Platforms
-
-| Platform | Code | Region |
-|----------|------|--------|
-| WeCom | `wecom` | China |
-| Feishu | `feishu` | China |
-| DingTalk | `dingtalk` | China |
-| WhatsApp | `whatsapp` | Global |
-
 ### Commands Work Right Now
 
 ```
@@ -121,15 +112,15 @@ cp -r OpenClaw-Robotics ~/.openclaw/skills/unitree-robot
 ```python
 from unitree_robot_skill import initialize, execute
 
-# Connect robot to your messaging app
+# Connect robot to your OpenClaw agent
 initialize(
     robot="unitree_go2",
-    robot_ip="192.168.12.1",
-    im="wecom"
+    robot_ip="192.168.12.1"
 )
 
-# That's it! Now control via WhatsApp/WeChat/etc.
-
+# That's it! Now control via OpenClaw
+# The OpenClaw main agent receives commands from IM (WeChat, WhatsApp, etc.)
+# and forwards them to this skill.
 execute("forward 1m")
 execute("turn left 90")
 execute("wave")
@@ -137,7 +128,7 @@ execute("wave")
 # Check status anytime
 status = get_status()
 print(status)
-# {'robot': 'Unitree GO2', 'battery': '85%', 'temperature': '35°C'}
+# {'robot': 'Unitree GO2', 'battery': '85%', 'temperature': '35°C', 'position': [1.0, 0.0, 0.0]}
 ```
 
 ---
@@ -189,6 +180,12 @@ print(status)
                       │
                       ▼
 ┌─────────────────────────────────────────────────────┐
+│                 OpenClaw Agent                      │
+│        (LLM Logic & Decision Making)                │
+└─────────────────────┬───────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────┐
 │              Natural Language Parser                │
 │    "forward 1m then turn left" → [actions]        │
 └─────────────────────┬───────────────────────────────┘
@@ -228,7 +225,7 @@ class MyRobotAdapter(RobotAdapter):
     
     def move(self, x: float, y: float, yaw: float):
         # Your movement code
-        return TaskResult(True, "Moved")
+        return TaskResult(True, "Moved", data={"position": [x, y, 0]})
     
     # ... implement other methods
 
@@ -305,7 +302,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 ```bibtex
 @software{OpenClaw-Robotics,
   author = {LooperRobotics},
-  title = {OpenClaw Robotics Skill - Control Robots via Messaging},
+  title = {OpenClaw Robotics Skill - Control Robots via OpenClaw},
   year = {2025},
   url = {https://github.com/LooperRobotics/OpenClaw-Robotics},
   license = {MIT}
@@ -324,5 +321,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 <p align="center">
   <strong>Built with ❤️ by <a href="https://github.com/LooperRobotics">LooperRobotics</a></strong><br>
-  <sub>Making robots accessible to everyone, one message at a time.</sub>
+  <sub>Making robots accessible to everyone.</sub>
 </p>
