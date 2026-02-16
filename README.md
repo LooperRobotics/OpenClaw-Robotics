@@ -317,8 +317,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 ## ⭐ Let's Connect
 
 - **GitHub**: https://github.com/LooperRobotics
-- **Website**: https://looper.tech (coming soon)
-- **Email**: looper@looper.tech
+- **Website**: https://www.looper-robotics.com
+- **Email**: qinrui.yan@looper-robotics.com
 
 ---
 
